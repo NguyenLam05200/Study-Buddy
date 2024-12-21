@@ -2,4 +2,13 @@
 <resources>
 
     <style name="Theme.StudyBuddy" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.StudyBuddy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.StudyBuddy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.StudyBuddy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
