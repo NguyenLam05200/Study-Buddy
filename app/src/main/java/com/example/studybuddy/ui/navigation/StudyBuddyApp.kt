@@ -1,6 +1,7 @@
 package com.example.studybuddy.ui.navigation
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -33,6 +34,7 @@ fun StudyBuddyApp() {
     // Quan sát trạng thái từ DataStore
     val isDarkMode by ThemePreference.isDarkMode(context).collectAsState(initial = false)
 
+    Log.d("StudyBuddyApp", "isDarkMode: $isDarkMode")
     StudyBuddyTheme(darkTheme = isDarkMode) {
         val navController = rememberNavController()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

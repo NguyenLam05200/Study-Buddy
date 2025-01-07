@@ -131,9 +131,6 @@ fun DrawerContent(
         .map { it?.destination?.route ?: "home" }
         .collectAsState(initial = "home")
 
-
-    Log.d("DrawerContent", "currentRoute: $currentRoute")
-
     ModalDrawerSheet {
         DrawerHeader(isDarkMode, onThemeToggle)
 
@@ -142,7 +139,6 @@ fun DrawerContent(
                 label = { Text(text = item.title) },
                 selected = (currentRoute == item.route),
                 onClick = {
-                    Log.d("Clicked item", "currentRoute: $currentRoute, item.route: ${item.route}")
                     if (currentRoute != item.route) {
                         scope.launch { drawerState.close() }
                         navController.navigate(item.route) {
@@ -152,7 +148,7 @@ fun DrawerContent(
                     }
                 },
                 icon = {
-                    androidx.compose.material3.Icon(
+                    Icon(
                         imageVector = item.selectedIcon,
                         contentDescription = item.title
                     )

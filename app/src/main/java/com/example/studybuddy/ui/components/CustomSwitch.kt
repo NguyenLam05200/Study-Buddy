@@ -1,5 +1,6 @@
 package com.example.studybuddy.ui.components
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,7 +86,6 @@ fun MainPrev() {
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalWearMaterialApi::class)
 @Composable
 fun CustomSwitch(
@@ -100,21 +101,24 @@ fun CustomSwitch(
     initialValue: Int,
     onCheckedChanged: (checked: Boolean) -> Unit
 ) {
+    val swipeableState = rememberSwipeableState(initialValue)
 
-    val swipeableState = rememberSwipeableState(
-        initialValue = initialValue,
-        confirmStateChange = { newState ->
-            if (newState == stateOff) {
-                onCheckedChanged(false)
-            } else {
-                onCheckedChanged(true)
-            }
-            true
+    // Đồng bộ swipeableState với initialValue khi nó thay đổi từ bên ngoài
+    LaunchedEffect(initialValue) {
+        swipeableState.snapTo(initialValue)
+    }
+
+    // Theo dõi thay đổi của swipeableState và gọi onCheckedChanged
+    LaunchedEffect(swipeableState.currentValue) {
+        if (swipeableState.currentValue == stateOn) {
+            onCheckedChanged(true) // Chuyển sang trạng thái "on"
+        } else if (swipeableState.currentValue == stateOff) {
+            onCheckedChanged(false) // Chuyển sang trạng thái "off"
         }
-    )
+    }
 
     val sizePx = with(LocalDensity.current) { (width - height).toPx() }
-    val anchors = mapOf(0f to stateOff, sizePx to stateOn) // Maps anchor points (in px) to states
+    val anchors = mapOf(0f to stateOff, sizePx to stateOn)
 
     val scope = rememberCoroutineScope()
 
@@ -127,7 +131,7 @@ fun CustomSwitch(
             .swipeable(
                 state = swipeableState,
                 anchors = anchors,
-                thresholds = { _, _ -> FractionalThreshold(0.3f) },
+                thresholds = { _, _ -> FractionalThreshold(0.2f) },
                 orientation = Orientation.Horizontal
             )
             .background(Color.Transparent)
@@ -139,11 +143,18 @@ fun CustomSwitch(
                     painterResource(id = outerBackgroundOnResource),
                     contentScale = ContentScale.FillBounds
                 )
-            ),
+            )
+            .clickable {
+                scope.launch {
+                    if (swipeableState.currentValue == stateOff) {
+                        swipeableState.animateTo(stateOn)
+                    } else {
+                        swipeableState.animateTo(stateOff)
+                    }
+                }
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
-
-
         Box(
             Modifier
                 .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
@@ -159,23 +170,9 @@ fun CustomSwitch(
                         contentScale = ContentScale.FillBounds
                     )
                 )
-                .clickable {
-                    scope.launch {
-
-                        if (swipeableState.currentValue == stateOff) {
-                            swipeableState.animateTo(stateOn)
-                        } else {
-                            swipeableState.animateTo(stateOff)
-                        }
-
-                    }
-
-
-                }
         )
     }
-
-
 }
+
 
 
