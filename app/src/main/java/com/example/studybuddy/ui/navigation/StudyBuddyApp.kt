@@ -71,7 +71,7 @@ fun StudyBuddyApp() {
             ) { innerPadding ->
                 NavHost(
                     navController = navController,
-                    startDestination = "home",
+                    startDestination = "todo",
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     navItems.forEach { item ->

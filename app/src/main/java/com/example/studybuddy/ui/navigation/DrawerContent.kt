@@ -2,6 +2,7 @@ package com.example.studybuddy.ui.navigation
 
 import Dark_mode
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +34,10 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
@@ -51,6 +55,7 @@ import com.example.studybuddy.R
 import com.example.studybuddy.data.ThemePreference
 import com.example.studybuddy.ui.components.CustomSwitch
 import com.example.studybuddy.ui.icons.Light_mode
+import kotlinx.coroutines.flow.map
 
 
 data class NavigationItems(
@@ -122,16 +127,29 @@ fun DrawerContent(
     isDarkMode: Boolean,
     onThemeToggle: (Boolean) -> Unit // Callback để xử lý thay đổi theme
 ) {
+    val currentRoute by navController.currentBackStackEntryFlow
+        .map { it?.destination?.route ?: "home" }
+        .collectAsState(initial = "home")
+
+
+    Log.d("DrawerContent", "currentRoute: $currentRoute")
+
     ModalDrawerSheet {
         DrawerHeader(isDarkMode, onThemeToggle)
 
         navItems.forEach { item ->
             NavigationDrawerItem(
-                label = { androidx.compose.material3.Text(text = item.title) },
-                selected = navController.currentBackStackEntry?.destination?.route == item.route,
+                label = { Text(text = item.title) },
+                selected = (currentRoute == item.route),
                 onClick = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(item.route)
+                    Log.d("Clicked item", "currentRoute: $currentRoute, item.route: ${item.route}")
+                    if (currentRoute != item.route) {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }
                 },
                 icon = {
                     androidx.compose.material3.Icon(
