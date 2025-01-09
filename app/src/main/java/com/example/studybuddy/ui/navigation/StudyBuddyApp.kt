@@ -1,7 +1,10 @@
 package com.example.studybuddy.ui.navigation
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.view.View
+import android.widget.FrameLayout
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -18,12 +21,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.studybuddy.data.ThemePreference
+import com.example.studybuddy.ui.screens.CourseFragment
 import com.example.studybuddy.ui.theme.StudyBuddyTheme
 import kotlinx.coroutines.launch
+import com.example.studybuddy.ui.components.FragmentContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,18 +63,27 @@ fun StudyBuddyApp() {
         ) {
             Scaffold(
                 topBar = {
-                    TopAppBar(
-                        title = { Text("Study Buddy") },
-                        navigationIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    if (drawerState.isClosed) drawerState.open() else drawerState.close()
-                                }
-                            }) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menu")
+                    StudyBuddyTopBar(
+                        title = "Study Buddy",
+                        onMenuClick = {
+                            scope.launch {
+                                if (drawerState.isClosed) drawerState.open() else drawerState.close()
                             }
                         }
                     )
+
+//                    TopAppBar(
+//                        title = { Text("Study Buddy") },
+//                        navigationIcon = {
+//                            IconButton(onClick = {
+//                                scope.launch {
+//                                    if (drawerState.isClosed) drawerState.open() else drawerState.close()
+//                                }
+//                            }) {
+//                                Icon(Icons.Default.Menu, contentDescription = "Menu")
+//                            }
+//                        }
+//                    )
                 }
             ) { innerPadding ->
                 NavHost(
@@ -77,9 +92,20 @@ fun StudyBuddyApp() {
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     navItems.forEach { item ->
-                        composable(item.route) {
-                            item.screen(Modifier.padding(8.dp))
+                        if (item.route == "courses") {
+                            // Handle Fragment-based screen
+                            composable(item.route) {
+//                                FragmentContainer(fragmentClass = CourseFragment::class.java, modifier = Modifier.padding(8.dp))
+                            FragmentContainer(fragmentClass = CourseFragment::class.java)
+                            }
+
+                        } else {
+                            // Handle Compose-based screens
+                            composable(item.route) {
+                                item.screen?.invoke(Modifier.padding(8.dp))
+                            }
                         }
+
                     }
                 }
             }

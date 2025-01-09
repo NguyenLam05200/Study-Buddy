@@ -1,6 +1,8 @@
 package com.example.studybuddy.ui.navigation
 
 import Dark_mode
+import android.app.FragmentContainer
+import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -88,6 +91,13 @@ val navItems = listOf(
         Icons.Outlined.Settings,
         "settings",
         screen = { SettingsScreen() }
+    ),
+    NavigationItems(
+        "Courses",
+        Icons.Filled.Star, // Thay bằng icon phù hợp
+        Icons.Outlined.Star,
+        "courses",
+        screen = {},
     )
 )
 
@@ -130,6 +140,7 @@ fun DrawerContent(
     val currentRoute by navController.currentBackStackEntryFlow
         .map { it?.destination?.route ?: "home" }
         .collectAsState(initial = "home")
+    val context = LocalContext.current
 
     ModalDrawerSheet {
         DrawerHeader(isDarkMode, onThemeToggle)
@@ -141,10 +152,17 @@ fun DrawerContent(
                 onClick = {
                     if (currentRoute != item.route) {
                         scope.launch { drawerState.close() }
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId) { inclusive = false }
-                            launchSingleTop = true
-                        }
+//                        if (item.route == "courses") {
+//                            context.startActivity(Intent(context, CourseActivity::class.java))
+//                        } else {
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = false
+                                }
+                                launchSingleTop = true
+                            }
+//                        }
+
                     }
                 },
                 icon = {
