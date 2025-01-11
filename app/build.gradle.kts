@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.studybuddy"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.studybuddy"
-        minSdk = 29
-        targetSdk = 35
+        minSdk = 28
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -36,7 +36,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
