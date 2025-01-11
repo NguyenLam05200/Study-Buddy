@@ -18,20 +18,23 @@
         android:contentDescription="@string/nav_header_desc"
         android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@drawable/school" />
 
     <!-- Switch ở góc trên bên phải -->
-    <Switch
-        android:id="@+id/switchButton"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:thumb="@drawable/thumb_layerlist"
-        android:track="@drawable/track_backgrounds"
-        android:showText="false" />
 
 
     <!-- Tiêu đề bên dưới ImageView -->
+    <Switch
+        android:layout_margin="8dp"
+        android:id="@+id/switchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="11dp"
+        android:showText="false"
+        android:thumb="@drawable/thumb_layerlist"
+        android:track="@drawable/track_backgrounds" />
+
     <TextView
         android:id="@+id/nav_header_title"
         android:layout_width="wrap_content"
@@ -40,6 +43,7 @@
         android:layout_alignStart="@id/imageView"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_title"
+        android:textSize="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <!-- Subtitle bên dưới Title -->
