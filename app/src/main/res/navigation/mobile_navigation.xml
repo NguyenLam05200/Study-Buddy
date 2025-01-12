@@ -22,9 +22,16 @@
         android:name="com.example.studybuddy.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
     <fragment
         android:id="@+id/nav_course"
         android:name="com.example.studybuddy.ui.course.CourseFragment"
         android:label="@string/menu_course"
         tools:layout="@layout/fragment_course" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.studybuddy.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
