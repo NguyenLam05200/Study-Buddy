@@ -3,35 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/home_frag">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.studybuddy.ui.home.HomeFragment"
+        android:id="@+id/home_frag"
+        android:name="com.example.studybuddy.ui.home.home_frag"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.studybuddy.ui.gallery.GalleryFragment"
+        android:id="@+id/gallery_frag"
+        android:name="com.example.studybuddy.ui.gallery.gallery_frag"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.studybuddy.ui.slideshow.SlideshowFragment"
+        android:id="@+id/slideshow_frag"
+        android:name="com.example.studybuddy.ui.slideshow.slideshow_frag"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
-        android:id="@+id/nav_course"
-        android:name="com.example.studybuddy.ui.course.CourseFragment"
+        android:id="@+id/course_frag"
+        android:name="com.example.studybuddy.ui.course.course_frag"
         android:label="@string/menu_course"
-        tools:layout="@layout/fragment_course" />
+        tools:layout="@layout/fragment_course" >
+        <action
+            android:id="@+id/action_nav_course_to_course_addcourse"
+            app:destination="@id/course_addcource_frag" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.example.studybuddy.ui.settings.SettingsFragment"
+        android:id="@+id/course_addcource_frag"
+        android:name="com.example.studybuddy.ui.course.course_addcourse_frag"
+        android:label="@string/course_addcourse"
+        tools:layout="@layout/fragment_course_addcourse" />
+
+    <fragment
+        android:id="@+id/settings_frag"
+        android:name="com.example.studybuddy.ui.settings.settings_frag"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

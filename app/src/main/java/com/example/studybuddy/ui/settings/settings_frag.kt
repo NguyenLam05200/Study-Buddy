@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.studybuddy.R
 
-class SettingsFragment : Fragment() {
+class settings_frag : Fragment() {
 
     companion object {
-        fun newInstance() = SettingsFragment()
+        fun newInstance() = settings_frag()
     }
 
-    private val viewModel: SettingsViewModel by viewModels()
+    private val viewModel: settings_vm by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

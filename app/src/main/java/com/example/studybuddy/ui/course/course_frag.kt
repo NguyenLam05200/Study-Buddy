@@ -6,15 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.studybuddy.R
 
-class CourseFragment : Fragment() {
+class course_frag : Fragment() {
 
     companion object {
-        fun newInstance() = CourseFragment()
+        fun newInstance() = course_frag()
     }
 
-    private val viewModel: CourseViewModel by viewModels()
+    private val viewModel: course_vm by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val navController = findNavController()
+
+        val testbutton : Button = view.findViewById(R.id.testbutton)
+        testbutton.setOnClickListener {
+            navController.navigate(R.id.course_addcource_frag)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
