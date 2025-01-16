@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.deadline.deadline_add_frag">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/coursename_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="0dp"
+
+            android:gravity="center_vertical"
+            android:text="@string/course_addcourse_coursename"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/course_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+
+            android:layout_marginTop="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coursename_textview" />
+
+
+        <TextView
+            android:id="@+id/date_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/course_addcourse_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/course_spinner" />
+
+        <EditText
+            android:id="@+id/date_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/element_account_edittext"
+            android:ems="10"
+            android:inputType="text"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/date_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_textview" />
+
+        <ImageButton
+            android:id="@+id/date_button"
+            android:layout_width="@dimen/datebutton_width"
+            android:layout_height="@dimen/datebutton_width"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/default_border_margin"
+
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_calendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/date_edittext" />
+
+        <TextView
+            android:id="@+id/note_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/course_addcourse_note"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_edittext" />
+
+        <EditText
+            android:id="@+id/note_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+
+            android:background="@drawable/element_account_edittext"
+            android:gravity="center_vertical"
+            android:hint="Some note here"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_textview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -1,13 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.settings.settings_frag">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/settings_language_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/default_border_margin"
+
+            android:gravity="center_vertical"
+            android:text="@string/settings_language"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/settings_language_spinner"
+            android:layout_width="@dimen/settings_spinner_width"
+            android:layout_height="@dimen/settings_row_height"
+
+            android:layout_marginEnd="@dimen/default_border_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/settings_language_textview" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/light_gray"
+            app:flow_verticalBias="0.5"
+            app:layout_constraintBottom_toTopOf="@id/settings_dateformat_textview"
+            app:layout_constraintTop_toBottomOf="@id/settings_language_textview"
+            app:layout_constraintVertical_bias="0.451"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/settings_dateformat_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/settings_dateformat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_language_textview" />
+
+        <Spinner
+            android:id="@+id/settings_dateformat_spinner"
+            android:layout_width="@dimen/settings_spinner_width"
+            android:layout_height="@dimen/settings_row_height"
+
+            android:layout_marginEnd="@dimen/default_border_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/settings_dateformat_textview" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/light_gray"
+            app:flow_verticalBias="0.5"
+            app:layout_constraintBottom_toTopOf="@id/settings_notification_textview"
+            app:layout_constraintTop_toBottomOf="@id/settings_dateformat_textview" />
+
+        <TextView
+            android:id="@+id/settings_notification_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/settings_notification"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_dateformat_textview" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/light_gray"
+            app:flow_verticalBias="0.5"
+            app:layout_constraintBottom_toTopOf="@id/settings_fontsize_textview"
+            app:layout_constraintTop_toBottomOf="@id/settings_notification_textview" />
+
+        <TextView
+            android:id="@+id/settings_fontsize_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/settings_fontsize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_notification_textview" />
+
+        <Spinner
+            android:id="@+id/settings_fontsize_spinner"
+            android:layout_width="@dimen/settings_spinner_width"
+            android:layout_height="@dimen/settings_row_height"
+
+            android:layout_marginEnd="@dimen/default_border_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/settings_fontsize_textview" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/light_gray"
+            app:flow_verticalBias="0.5"
+            app:layout_constraintBottom_toTopOf="@id/settings_googledrive_textview"
+            app:layout_constraintTop_toBottomOf="@id/settings_fontsize_textview" />
+
+        <TextView
+            android:id="@+id/settings_googledrive_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/settings_googledrive"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_fontsize_textview" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/light_gray"
+            app:flow_verticalBias="0.5"
+            app:layout_constraintBottom_toTopOf="@id/settings_about_textview"
+            app:layout_constraintTop_toBottomOf="@id/settings_googledrive_textview" />
+
+        <TextView
+            android:id="@+id/settings_about_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/settings_about"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_googledrive_textview" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>
