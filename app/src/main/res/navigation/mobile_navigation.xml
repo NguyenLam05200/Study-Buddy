@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/home_frag">
+    app:startDestination="@+id/course_frag">
 
     <fragment
         android:id="@+id/home_frag"
@@ -25,19 +25,19 @@
 
     <fragment
         android:id="@+id/course_frag"
-        android:name="com.example.studybuddy.ui.course.course_frag"
+        android:name="com.example.studybuddy.ui.course.CourseFragment"
         android:label="@string/menu_course"
         tools:layout="@layout/fragment_course" >
         <action
-            android:id="@+id/action_nav_course_to_course_addcourse"
-            app:destination="@id/course_addcource_frag" />
+            android:id="@+id/action_to_add_course_frag"
+            app:destination="@id/add_course_frag" />
     </fragment>
 
     <fragment
-        android:id="@+id/course_addcource_frag"
-        android:name="com.example.studybuddy.ui.course.course_addcourse_frag"
+        android:id="@+id/add_course_frag"
+        android:name="com.example.studybuddy.ui.course.AddCourseFragment"
         android:label="@string/course_addcourse"
-        tools:layout="@layout/fragment_course_addcourse" />
+        tools:layout="@layout/fragment_add_course" />
 
     <fragment
         android:id="@+id/settings_frag"

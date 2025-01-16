@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.studybuddy.R
 
-class course_addcourse_frag : Fragment() {
+class AddCourseFragment : Fragment() {
 
     companion object {
-        fun newInstance() = course_addcourse_frag()
+        fun newInstance() = AddCourseFragment()
     }
 
-    private val viewModel: course_addcourse_vm by viewModels()
+    private val viewModel: AddCourseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,6 @@ class course_addcourse_frag : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_course_addcourse, container, false)
+        return inflater.inflate(R.layout.fragment_add_course, container, false)
     }
 }

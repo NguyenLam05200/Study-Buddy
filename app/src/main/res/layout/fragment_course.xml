@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.course.course_frag">
+    android:padding="8dp"
+    tools:context=".ui.course.CourseFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Layout chứa nút New Course -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <Button
-            android:id="@+id/testbutton"
-            android:layout_width="120dp"
-            android:layout_height="80dp"
-            android:text="Test"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:id="@+id/buttonNewCourse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_course"
+            android:textColor="@color/white"
+            app:backgroundTint="#009CE5" />
+    </LinearLayout>
 
+    <!-- RecyclerView hiển thị danh sách khóa học -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCourses"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        tools:listitem="@layout/item_course" />
 
-</FrameLayout>
+    <!-- TextView hiển thị khi danh sách trống -->
+    <TextView
+        android:id="@+id/textViewEmptyCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/no_courses_available"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
