@@ -44,23 +44,17 @@ class settings_frag : Fragment() {
 
         /* Adapters */
         val language_adapter = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            CONF.languages
+            requireContext(), android.R.layout.simple_spinner_item, CONF.languages
         )
         language_adapter.setDropDownViewResource(R.layout.element_settings_spinner_dropdown)
 
         val fontsize_adapter = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            CONF.fontsizes
+            requireContext(), android.R.layout.simple_spinner_item, CONF.fontsizes
         )
         fontsize_adapter.setDropDownViewResource(R.layout.element_settings_spinner_dropdown)
 
         val datetime_adapter = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            CONF.datetime_formats
+            requireContext(), android.R.layout.simple_spinner_item, CONF.datetime_formats
         )
         datetime_adapter.setDropDownViewResource(R.layout.element_settings_spinner_dropdown)
 
@@ -72,8 +66,10 @@ class settings_frag : Fragment() {
         /* */
         val about_textview = view.findViewById<TextView>(R.id.settings_about_textview)
         about_textview.setOnClickListener() {
-            showInfoDialog(requireContext(), "About", message = "18120433 - Nguyen Van Lam\n" +
-                    "20120339 - Nguyen Nhat Nguyen")
+            showInfoDialog(
+                requireContext(), "About", message = "18120433 - Nguyen Van Lam\n" +
+                        "20120339 - Nguyen Nhat Nguyen"
+            )
         }
     }
 

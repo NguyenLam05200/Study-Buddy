@@ -51,7 +51,6 @@ class CourseViewModel(private val repository: CourseRepository) : ViewModel() {
         }
     }
 
-
     fun addCourse(course: CourseModel) {
         viewModelScope.launch {
             repository.addCourse(course)

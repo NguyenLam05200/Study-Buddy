@@ -12,7 +12,7 @@ import com.example.studybuddy.R
 import com.example.studybuddy.data.local.model.CourseModel
 
 class CourseAdapter(
-    private val onAction: (CourseModel, Action) -> Unit
+    private val onAction: ((CourseModel, Action) -> Unit)
 ) : ListAdapter<CourseModel, CourseAdapter.CourseViewHolder>(DIFF_CALLBACK) {
 
     enum class Action {
@@ -32,7 +32,7 @@ class CourseAdapter(
     inner class CourseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.textViewCourseName)
         private val timeTextView: TextView = itemView.findViewById(R.id.textViewCourseTime)
-        private  val dateTextView: TextView = itemView.findViewById(R.id.textViewCourseDate)
+        private val dateTextView: TextView = itemView.findViewById(R.id.textViewCourseDate)
         private val editButton: ImageButton = itemView.findViewById(R.id.buttonEditCourse)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.buttonDeleteCourse)
 
@@ -48,8 +48,11 @@ class CourseAdapter(
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CourseModel>() {
-            override fun areItemsTheSame(oldItem: CourseModel, newItem: CourseModel) = oldItem.id == newItem.id
-            override fun areContentsTheSame(oldItem: CourseModel, newItem: CourseModel) = oldItem == newItem
+            override fun areItemsTheSame(oldItem: CourseModel, newItem: CourseModel) =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: CourseModel, newItem: CourseModel) =
+                oldItem == newItem
         }
     }
 }
