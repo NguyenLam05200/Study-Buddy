@@ -1,32 +1,52 @@
 package com.example.studybuddy.data.repository
 
-import androidx.lifecycle.LiveData
-import com.example.studybuddy.data.local.dao.CourseDao
 import com.example.studybuddy.data.local.model.CourseModel
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.types.RealmInstant
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+class CourseRepository(private val realm: Realm) {
 
-class CourseRepository(private val courseDao: CourseDao) {
+    fun getAllCourses(): Flow<List<CourseModel>> {
+        return realm.query<CourseModel>().asFlow().map { it.list }
+    }
 
-    val allCourses: LiveData<List<CourseModel>> = courseDao.getAllCourses()
+    suspend fun isEmpty(): Boolean {
+        return realm.query<CourseModel>().count().find() == 0L
+    }
 
-    suspend fun insertCourse(course: CourseModel) {
-        courseDao.insertCourse(course)
+    suspend fun addCourses(courses: List<CourseModel>) {
+        realm.write {
+            courses.forEach { copyToRealm(it) }
+        }
+    }
+
+    suspend fun addCourse(course: CourseModel) {
+        realm.write {
+            copyToRealm(course)
+        }
     }
 
     suspend fun deleteCourse(course: CourseModel) {
-        courseDao.deleteCourse(course)
+        realm.write {
+            findLatest(course)?.let { delete(it) }
+        }
     }
 
     suspend fun updateCourse(course: CourseModel) {
-        courseDao.updateCourse(course)
-    }
-
-    suspend fun insertCourses(courses: List<CourseModel>) {
-        courseDao.insertCourses(courses)
-    }
-
-    suspend fun getAllCoursesSync(): List<CourseModel> {
-        return courseDao.getAllCoursesSync()
+        realm.write {
+            findLatest(course)?.apply {
+                name = course.name
+                dayOfWeek = course.dayOfWeek
+                startTime = course.startTime
+                endTime = course.endTime
+                startDate = course.startDate
+                endDate = course.endDate
+                hasReminder = course.hasReminder
+                room = course.room
+            }
+        }
     }
 }
-
 

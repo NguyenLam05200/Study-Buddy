@@ -8,31 +8,22 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studybuddy.R
 import com.example.studybuddy.data.repository.CourseRepository
-import com.example.studybuddy.utils.DatabaseProvider
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.studybuddy.data.local.DatabaseProvider
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class CourseFragment : Fragment() {
-    companion object {
-        fun newInstance() = CourseFragment()
-    }
 
-    //    private val viewModel: CourseViewModel by viewModels()
-    private val viewModel: CourseViewModel by viewModels {
-        val dao = DatabaseProvider.getDatabase(requireContext()).courseDao()
-        val repository = CourseRepository(dao)
-        CourseViewModelFactory(repository)
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
+    // Initialize Realm and ViewModel
+    val viewModel: CourseViewModel by viewModels {
+        val realm = DatabaseProvider.getDatabase(requireContext())
+        CourseViewModelFactory(CourseRepository(realm))
     }
 
     override fun onCreateView(
@@ -41,17 +32,19 @@ class CourseFragment : Fragment() {
     ): View {
         val rootView = inflater.inflate(R.layout.fragment_course, container, false)
 
-        // Khởi tạo RecyclerView
+        // Set up RecyclerView
         setupRecyclerView(rootView)
 
-        // Thêm logic khởi tạo khóa học mặc định
-        viewModel.initializeDefaultCourses()
-
-        // Khởi tạo nút thêm khóa học
+        // Add button for adding new courses
         setupAddButton(rootView)
 
         return rootView
-//        return inflater.inflate(R.layout.fragment_course, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Initialize default courses if needed
+        viewModel.initializeDefaultCourses()
     }
 
     private fun setupRecyclerView(rootView: View) {
@@ -67,13 +60,15 @@ class CourseFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
-        // Quan sát dữ liệu
-        viewModel.courses.observe(viewLifecycleOwner) { courses ->
-            adapter.submitList(courses)
-            // Hiển thị thông báo nếu danh sách trống
-            emptyTextView.visibility = if (courses.isEmpty()) View.VISIBLE else View.GONE
+        // Collect data from Flow
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.courses.collectLatest { courses ->
+                adapter.submitList(courses)
+                emptyTextView.visibility = if (courses.isEmpty()) View.VISIBLE else View.GONE
+            }
         }
     }
+
 
     private fun setupAddButton(rootView: View) {
         val addButton: Button = rootView.findViewById(R.id.buttonNewCourse)
@@ -87,11 +82,9 @@ class CourseFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-
-    private fun navigateToEditCourse(courseId: Int) {
-        // Điều hướng đến màn hình chỉnh sửa khóa học
-//        val action = CourseFragmentDirections.actionCourseFragmentToEditCourseFragment(courseId)
-//        requireView().findNavController().navigate(action)
+    private fun navigateToEditCourse(courseId: Long) {
+        // Navigate to EditCourseFragment
+        // val action = CourseFragmentDirections.actionCourseFragmentToEditCourseFragment(courseId)
+        // findNavController().navigate(action)
     }
-
 }

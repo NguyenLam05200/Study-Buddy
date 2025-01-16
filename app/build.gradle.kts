@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp") version "1.9.0-1.0.13" // Phải phù hợp với phiên bản Kotlin bạn dùng
     id("androidx.navigation.safeargs")
+    id("io.realm.kotlin") version "1.16.0" // https://github.com/realm/realm-kotlin
 }
 
 android {
@@ -55,12 +55,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    val room_version = "2.6.1"
-    // Room runtime
-    implementation("androidx.room:room-runtime:$room_version")
-    // Room compiler using KSP
-    ksp("androidx.room:room-compiler:$room_version")
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("io.realm.kotlin:library-base:1.16.0")
 }

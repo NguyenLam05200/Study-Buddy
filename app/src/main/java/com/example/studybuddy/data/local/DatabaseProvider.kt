@@ -1,30 +1,36 @@
-package com.example.studybuddy.utils
+package com.example.studybuddy.data.local
 
 import android.content.Context
-import androidx.room.Room
-import com.example.studybuddy.data.local.database.AppDatabase
+import com.example.studybuddy.data.local.model.CourseModel
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-object DatabaseProvider {
-    @Volatile
-    private var INSTANCE: AppDatabase? = null
+// Sử dụng Schema gì muốn dăng ký Realm Database thì bỏ vào đây
+object RealmSchemas {
+    val SCHEMA = setOf(
+        CourseModel::class,
+//        QuizModel::class,
+//        SchedulerModel::class
+    )
+}
 
-    fun getDatabase(context: Context): AppDatabase {
-        return INSTANCE ?: synchronized(this) {
-            val instance = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java,
-                "study_buddy_db"
-            )
-                .fallbackToDestructiveMigration() // Xóa toàn bộ dữ liệu nếu schema thay đổi
+object DatabaseProvider {
+    private var realm: Realm? = null
+
+    fun getDatabase(context: Context): Realm {
+        if (realm == null) {
+            val config = RealmConfiguration.Builder(schema = RealmSchemas.SCHEMA)
+                .name("study_buddy.realm") // Tên file Realm
+                .deleteRealmIfMigrationNeeded() // Xóa dữ liệu nếu có thay đổi schema
                 .build()
-            INSTANCE = instance
-            instance
+            realm = Realm.open(config)
         }
+        return realm!!
     }
 }
 

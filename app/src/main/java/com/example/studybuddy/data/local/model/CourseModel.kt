@@ -1,46 +1,69 @@
 package com.example.studybuddy.data.local.model
 
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.example.studybuddy.utils.DateUtils
-import java.util.Locale
 
-@Entity(tableName = "courses")
-data class CourseModel(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val name: String, // Tên môn học
-    val dayOfWeek: Int, // Thứ trong tuần (Calendar.MONDAY, ...)
-    val startTime: Long, // Thời gian bắt đầu (timestamp) ví dụ 8h am
-    val endTime: Long, // Thời gian kết thúc (timestamp) ví dụ 10h am
-    val startDate: Long, // Ngày bắt đầu khóa học (timestamp) ví dụ 21/09/2024
-    val endDate: Long, // Ngày kết thúc khóa học (timestamp) ví dụ 21/12/2024
-    val hasReminder: Boolean = false, // Có bật noti nhắc nhở không
-    val room: String? // Phòng học
-) {
-    @Ignore
-    fun formatDayOfWeek(locale: Locale = Locale.getDefault()): String {
-        val daysOfWeek = if (locale.language == "vi") {
-            listOf("Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7")
-        } else {
-            listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
-        }
-        return daysOfWeek[dayOfWeek - 1] // dayOfWeek starts from Calendar.SUNDAY = 1
-    }
+import io.realm.kotlin.types.annotations.PrimaryKey
+import io.realm.kotlin.types.RealmInstant
+import com.example.studybuddy.data.local.DateUtils
+import io.realm.kotlin.types.RealmObject
 
-    @Ignore
-    fun formatDateRange(): String {
-        return "${DateUtils.formatTimestamp(startDate, "dd/MM/yyyy")} - ${
-            DateUtils.formatTimestamp(
-                endDate,
-                "dd/MM/yyyy"
-            )
-        }"
-    }
+class CourseModel : RealmObject {
+    @PrimaryKey
+    var id: Long = 0
+    var name: String = ""
+    var dayOfWeek: String = ""
+    var startTime: RealmInstant = RealmInstant.now()
+    var endTime: RealmInstant = RealmInstant.now()
+    var startDate: RealmInstant = RealmInstant.now()
+    var endDate: RealmInstant = RealmInstant.now()
+    var hasReminder: Boolean = false
+    var room: String? = null
 
-    @Ignore
     fun formatTimeRange(): String {
-        return "${DateUtils.formatTimestamp(startTime, "hh:mm a")}, ${formatDayOfWeek()}"
+        return "${DateUtils.formatTimestamp(startTime.epochSeconds, "hh:mm a")} - ${DateUtils.formatTimestamp(endTime.epochSeconds, "hh:mm a")}"
+    }
+
+    fun formatDateRange(): String {
+        return "${DateUtils.formatTimestamp(startDate.epochSeconds, "dd/MM/yyyy")} - ${DateUtils.formatTimestamp(endDate.epochSeconds, "dd/MM/yyyy")}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as CourseModel
+
+        // Nếu `this` hoặc `other` không phải là Realm object thì so sánh như bình thường
+        if (!this.isManagedRealmObject() || !other.isManagedRealmObject()) {
+            return id == other.id &&
+                    name == other.name &&
+                    dayOfWeek == other.dayOfWeek &&
+                    startTime == other.startTime &&
+                    endTime == other.endTime &&
+                    startDate == other.startDate &&
+                    endDate == other.endDate &&
+                    hasReminder == other.hasReminder &&
+                    room == other.room
+        }
+
+        // Đối với RealmObject, so sánh bằng cách sử dụng chính Realm
+        return this.id == other.id
+    }
+
+    private fun Any.isManagedRealmObject(): Boolean {
+        return this is RealmObject
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + dayOfWeek.hashCode()
+        result = 31 * result + startTime.hashCode()
+        result = 31 * result + endTime.hashCode()
+        result = 31 * result + startDate.hashCode()
+        result = 31 * result + endDate.hashCode()
+        result = 31 * result + hasReminder.hashCode()
+        result = 31 * result + (room?.hashCode() ?: 0)
+        return result
     }
 }
+
