@@ -19,4 +19,5 @@
     <string name="edit_course">Edit course</string>
     <string name="delete_course">Delete course</string>
     <string name="new_course">New course</string>
+    <string name="course_manage">Manage course</string>
 </resources>

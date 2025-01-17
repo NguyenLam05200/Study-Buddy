@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("androidx.navigation.safeargs")
+    id("androidx.navigation.safeargs.kotlin") // Safe Args cho Kotlin
     id("io.realm.kotlin") version "1.16.0" // https://github.com/realm/realm-kotlin
 }
 

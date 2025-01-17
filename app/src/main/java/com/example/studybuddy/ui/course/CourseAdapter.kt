@@ -12,7 +12,8 @@ import com.example.studybuddy.R
 import com.example.studybuddy.data.local.model.CourseModel
 
 class CourseAdapter(
-    private val onAction: (CourseModel, Action) -> Unit
+    private val onAction: (CourseModel, Action) -> Unit,
+    private val onItemClick: (CourseModel) -> Unit // Thêm lambda function cho click item
 ) : ListAdapter<CourseModel, CourseAdapter.CourseViewHolder>(DIFF_CALLBACK) {
 
     enum class Action {
@@ -43,6 +44,9 @@ class CourseAdapter(
 
             editButton.setOnClickListener { onAction(course, Action.EDIT) }
             deleteButton.setOnClickListener { onAction(course, Action.DELETE) }
+
+            // Navigate when clicking the item
+            itemView.setOnClickListener { onItemClick(course) }
         }
     }
 

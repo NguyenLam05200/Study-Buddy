@@ -29,15 +29,24 @@
         android:label="@string/menu_course"
         tools:layout="@layout/fragment_course" >
         <action
-            android:id="@+id/action_to_add_course_frag"
-            app:destination="@id/add_course_frag" />
+            android:id="@+id/action_course_frag_to_manage_course_frag"
+            app:destination="@id/manage_course_frag" />
     </fragment>
 
     <fragment
-        android:id="@+id/add_course_frag"
-        android:name="com.example.studybuddy.ui.course.AddCourseFragment"
-        android:label="@string/course_addcourse"
-        tools:layout="@layout/fragment_add_course" />
+        android:id="@+id/manage_course_frag"
+        android:name="com.example.studybuddy.ui.course.ManageCourseFragment"
+        android:label="@string/course_manage"
+        tools:layout="@layout/fragment_add_course">
+        <argument
+            android:name="courseId"
+            app:argType="long"
+            android:defaultValue="-1L" /> <!-- Giá trị mặc định khi không có CourseID -->
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="ADD" /> <!-- Giá trị mặc định -->
+    </fragment>
 
     <fragment
         android:id="@+id/settings_frag"

@@ -52,12 +52,18 @@ class CourseFragment : Fragment() {
         val emptyTextView: TextView = rootView.findViewById(R.id.textViewEmptyCourses)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = CourseAdapter { course, action ->
-            when (action) {
-                CourseAdapter.Action.EDIT -> navigateToEditCourse(course.id)
-                CourseAdapter.Action.DELETE -> viewModel.deleteCourse(course)
+        val adapter = CourseAdapter(
+            onAction = { course, action ->
+                when (action) {
+                    CourseAdapter.Action.EDIT -> navigateToEditCourse(course.id)
+                    CourseAdapter.Action.DELETE -> viewModel.deleteCourse(course)
+                }
+            },
+            onItemClick = { course ->
+                navigateToCourseDetails(course.id)
             }
-        }
+        )
+
         recyclerView.adapter = adapter
 
         // Collect data from Flow
@@ -78,13 +84,27 @@ class CourseFragment : Fragment() {
     }
 
     private fun navigateToAddCourse() {
-        val action = CourseFragmentDirections.actionToAddCourseFrag()
+        val action = CourseFragmentDirections.actionCourseFragToManageCourseFrag(
+            courseId = -1L, // Giá trị mặc định cho chế độ ADD
+            mode = "ADD"
+        )
         findNavController().navigate(action)
     }
 
     private fun navigateToEditCourse(courseId: Long) {
         // Navigate to EditCourseFragment
-        // val action = CourseFragmentDirections.actionCourseFragmentToEditCourseFragment(courseId)
-        // findNavController().navigate(action)
+        val action = CourseFragmentDirections.actionCourseFragToManageCourseFrag(
+            courseId = courseId,
+            mode = "EDIT"
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToCourseDetails(courseId: Long) {
+        val action = CourseFragmentDirections.actionCourseFragToManageCourseFrag(
+            courseId = courseId,
+            mode = "DETAILS"
+        )
+        findNavController().navigate(action)
     }
 }
