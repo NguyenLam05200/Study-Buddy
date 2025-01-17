@@ -26,10 +26,7 @@ class deadline_add_frag : Fragment() {
         // TODO: Use the ViewModel
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_deadline_add, container, false)
     }
 
@@ -59,22 +56,20 @@ class deadline_add_frag : Fragment() {
 
         // Create a DatePickerDialog
         val datedialog = DatePickerDialog(requireContext())
-        datedialog.setOnDateSetListener(){ _, selectedYear, selectedMonth, selectedDay ->
+        datedialog.setOnDateSetListener() { _, selectedYear, selectedMonth, selectedDay ->
             onDatePickerResult(selectedYear, selectedMonth, selectedDay)
         }
 
-        if (parsed_date != null)
-        {
+        if (parsed_date != null) {
             // monthValue starts from 1, but datedialog month starts from 0
             datedialog.updateDate(parsed_date.year, parsed_date.monthValue - 1, parsed_date.dayOfMonth)
-        }
-        else
-        {
+        } else {
             // monthValue starts from 1, but datedialog month starts from 0
             datedialog.updateDate(
                 current_day.year,
                 current_day.monthValue - 1,
-                current_day.dayOfMonth)
+                current_day.dayOfMonth
+            )
         }
 
         datedialog.show()

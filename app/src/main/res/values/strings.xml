@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StudyBuddy</string>
+    <string name="app_name" translatable="false">StudyBuddy</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Study Buddy</string>
@@ -22,15 +22,16 @@
     <string name="settings_dateformat">Date Time Format</string>
     <string name="settings_notification">Notification</string>
     <string name="settings_fontsize">Font Size</string>
-    <string name="settings_googledrive">Google Drive</string>
+    <string name="settings_googledrive" translatable="false">Google Drive</string>
     <string name="settings_about">About</string>
 
-    <string name="course_addcourse_title">Add course</string>
-    <string name="course_addcourse_coursename">Course name</string>
-    <string name="course_addcourse_date">Date</string>
-    <string name="course_addcourse_note">Note</string>
-    <string name="course_addcourse">Add course</string>
+    <string name="deadline_add_name">Notification name</string>
+    <string name="deadline_add_datehour">Date &amp; Hour</string>
+    <string name="deadline_add_note">Note</string>
+    <string name="deadline_add_button">Add deadline</string>
 
+
+    <string name="course_addcourse">Add course</string>
     <string name="no_courses_available">No courses available</string>
     <string name="edit_course">Edit course</string>
     <string name="delete_course">Delete course</string>
