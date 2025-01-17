@@ -22,7 +22,7 @@ class CourseFragment : Fragment() {
 
     // Initialize Realm and ViewModel
     val viewModel: CourseViewModel by viewModels {
-        val realm = DatabaseProvider.getDatabase(requireContext())
+        val realm = DatabaseProvider.getDatabase()
         CourseViewModelFactory(CourseRepository(realm))
     }
 

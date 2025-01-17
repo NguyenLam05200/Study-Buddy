@@ -12,27 +12,28 @@ import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.DayOfWeek
 
 val defaultCourses = listOf(
     CourseModel().apply {
         id = 1L
         name = "Lập trình Mobile"
-        dayOfWeek = "Monday"
-        startTime = RealmInstant.from(1700000000, 0)
-        endTime = RealmInstant.from(1700003600, 0)
-        startDate = RealmInstant.now()
-        endDate = RealmInstant.from(1700000000 + 7776000, 0) // +90 days
+        dayOfWeek = DayOfWeek.MONDAY.value
+        startTime = 1737358800000L
+        endTime = 1737368400000L
+        startDate = 1758326400000L
+        endDate = 1737331200000L
         hasReminder = true
         room = "D211"
     },
     CourseModel().apply {
         id = 2L
-        name = "Data Science"
-        dayOfWeek = "Wednesday"
-        startTime = RealmInstant.from(1700100000, 0)
-        endTime = RealmInstant.from(1700103600, 0)
-        startDate = RealmInstant.now()
-        endDate = RealmInstant.from(1700100000 + 7776000, 0) // +90 days
+        name = "Lập trình web"
+        dayOfWeek = DayOfWeek.TUESDAY.value
+        startTime = 1737358800000L
+        endTime = 1737368400000L
+        startDate = 1758326400000L
+        endDate = 1737331200000L
         hasReminder = true
         room = "C101"
     }

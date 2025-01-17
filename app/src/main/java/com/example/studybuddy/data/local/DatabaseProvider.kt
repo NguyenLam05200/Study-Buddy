@@ -22,7 +22,7 @@ object RealmSchemas {
 object DatabaseProvider {
     private var realm: Realm? = null
 
-    fun getDatabase(context: Context): Realm {
+    fun getDatabase(): Realm {
         if (realm == null) {
             val config = RealmConfiguration.Builder(schema = RealmSchemas.SCHEMA)
                 .name("study_buddy.realm") // Tên file Realm

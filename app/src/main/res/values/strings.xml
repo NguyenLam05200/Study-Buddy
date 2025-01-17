@@ -20,4 +20,26 @@
     <string name="delete_course">Delete course</string>
     <string name="new_course">New course</string>
     <string name="course_manage">Manage course</string>
+    <string name="label_course_name">Course name</string>
+    <string name="hint_course_name">Enter course name</string>
+    <string name="label_course_time">Course time</string>
+    <string name="hint_course_time">Enter course time</string>
+    <string name="label_course_date">Course date</string>
+    <string name="hint_course_date">Enter course date</string>
+    <string name="label_reminder">Reminder</string>
+    <string name="label_course">Course</string>
+    <string name="label_course_list">Course list</string>
+    <string name="label_course_detail">Course detail</string>
+    <string name="button_save">Save</string>
+    <string-array name="days_of_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+
 </resources>

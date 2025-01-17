@@ -1,29 +1,40 @@
 package com.example.studybuddy.data.local.model
 
 
-import io.realm.kotlin.types.annotations.PrimaryKey
-import io.realm.kotlin.types.RealmInstant
+import android.util.Log
 import com.example.studybuddy.data.local.DateUtils
+import io.realm.kotlin.types.RealmInstant
 import io.realm.kotlin.types.RealmObject
-
+import io.realm.kotlin.types.annotations.PrimaryKey
+import java.time.DayOfWeek
 class CourseModel : RealmObject {
     @PrimaryKey
     var id: Long = 0
     var name: String = ""
-    var dayOfWeek: String = ""
-    var startTime: RealmInstant = RealmInstant.now()
-    var endTime: RealmInstant = RealmInstant.now()
-    var startDate: RealmInstant = RealmInstant.now()
-    var endDate: RealmInstant = RealmInstant.now()
+    var dayOfWeek: Int = DayOfWeek.MONDAY.value // Giá trị từ enum
+    var startTime: Long = System.currentTimeMillis() // Milliseconds
+    var endTime: Long = System.currentTimeMillis()   // Milliseconds
+    var startDate: Long = System.currentTimeMillis() // Milliseconds
+    var endDate: Long = System.currentTimeMillis()   // Milliseconds
     var hasReminder: Boolean = false
     var room: String? = null
 
+    // Format thời gian
+    fun formatTime(value: Long): String {
+        return DateUtils.formatTimestamp(value, "HH:mm")
+    }
+
+    // Format ngày
+    fun formatDate(value: Long): String {
+        return DateUtils.formatTimestamp(value, "dd/MM/yyyy")
+    }
+
     fun formatTimeRange(): String {
-        return "${DateUtils.formatTimestamp(startTime.epochSeconds, "hh:mm a")} - ${DateUtils.formatTimestamp(endTime.epochSeconds, "hh:mm a")}"
+        return "${formatTime(startTime)} - ${formatTime(endTime)}"
     }
 
     fun formatDateRange(): String {
-        return "${DateUtils.formatTimestamp(startDate.epochSeconds, "dd/MM/yyyy")} - ${DateUtils.formatTimestamp(endDate.epochSeconds, "dd/MM/yyyy")}"
+        return "${formatDate(startDate)} - ${formatDate(endDate)}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -66,4 +77,3 @@ class CourseModel : RealmObject {
         return result
     }
 }
-
