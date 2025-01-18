@@ -3,7 +3,11 @@ package com.example.studybuddy.utilities
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.example.studybuddy.data.local.DateUtils
 
 object CONF {
     var sharedPreferences: SharedPreferences? = null
@@ -84,4 +88,36 @@ fun showInfoDialog(context: Context, title: String = "Default", message: String,
 
     val dialog = builder.create()
     dialog.show()
+}
+
+// Toast chỉ có thể được gọi trên UI thread (main thread)
+fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_SHORT) {
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+        // Đang ở UI thread
+        Toast.makeText(context, message, duration).show()
+    } else {
+        // Chuyển sang UI thread
+        Handler(Looper.getMainLooper()).post {
+            Toast.makeText(context, message, duration).show()
+        }
+    }
+}
+
+
+// Format thời gian
+fun formatTime(value: Long): String {
+    return DateUtils.formatTimestamp(value, "HH:mm")
+}
+
+// Format ngày
+fun formatDate(value: Long): String {
+    return DateUtils.formatTimestamp(value, "dd/MM/yyyy")
+}
+
+fun formatTimeRange(startTime: Long, endTime: Long): String {
+    return "${formatTime(startTime)} - ${formatTime(endTime)}"
+}
+
+fun formatDateRange(startDate: Long, endDate: Long): String {
+    return "${formatDate(startDate)} - ${formatDate(endDate)}"
 }

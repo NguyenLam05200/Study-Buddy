@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.services.NotificationScheduler
 import com.example.studybuddy.services.NotificationService
+import com.example.studybuddy.utilities.showToast
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.types.RealmInstant
 
@@ -24,14 +26,24 @@ class ManageCourseViewModel : ViewModel() {
     }
 
     // Thêm mới khóa học
-    fun addCourse(course: CourseModel) {
+    fun addCourse(course: CourseModel, context: Context) {
         realm.writeBlocking {
             copyToRealm(course)
+        }
+        showToast(context, "Course added successfully!")
+
+        if (course.hasReminder) {
+            NotificationScheduler.scheduleNotification(
+                context,
+                course.id,
+                course.name,
+                course.startTime
+            )
         }
     }
 
     // Cập nhật khóa học
-    fun updateCourse(course: CourseModel) {
+    fun updateCourse(course: CourseModel, context: Context) {
         val notificationService = NotificationService.getInstance() // Khởi tạo NotificationService
 
         realm.writeBlocking {
@@ -52,6 +64,19 @@ class ManageCourseViewModel : ViewModel() {
                     message = "Course '${course.name}' has been updated!",
                     notificationId = course.id.toInt()
                 )
+
+                showToast(context, "Course updated successfully!")
+
+                if (course.hasReminder) {
+                    NotificationScheduler.scheduleNotification(
+                        context,
+                        course.id,
+                        course.name,
+                        course.startTime
+                    )
+                } else {
+                    NotificationScheduler.cancelNotification(context, course.id)
+                }
             } else {
                 Log.e("ManageCourseViewModel", "Course with id ${course.id} not found!")
             }

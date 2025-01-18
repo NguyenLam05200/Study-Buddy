@@ -3,6 +3,8 @@ package com.example.studybuddy.data.local.model
 
 import android.util.Log
 import com.example.studybuddy.data.local.DateUtils
+import com.example.studybuddy.utilities.formatDate
+import com.example.studybuddy.utilities.formatTime
 import io.realm.kotlin.types.RealmInstant
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
@@ -18,16 +20,6 @@ class CourseModel : RealmObject {
     var endDate: Long = System.currentTimeMillis()   // Milliseconds
     var hasReminder: Boolean = false
     var room: String? = null
-
-    // Format thời gian
-    fun formatTime(value: Long): String {
-        return DateUtils.formatTimestamp(value, "HH:mm")
-    }
-
-    // Format ngày
-    fun formatDate(value: Long): String {
-        return DateUtils.formatTimestamp(value, "dd/MM/yyyy")
-    }
 
     fun formatTimeRange(): String {
         return "${formatTime(startTime)} - ${formatTime(endTime)}"

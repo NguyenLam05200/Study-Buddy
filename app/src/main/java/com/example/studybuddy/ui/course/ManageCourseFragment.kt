@@ -16,6 +16,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.studybuddy.R
 import com.example.studybuddy.data.local.model.CourseModel
 import com.example.studybuddy.databinding.FragmentManageCourseBinding
+import com.example.studybuddy.utilities.formatDate
+import com.example.studybuddy.utilities.formatTime
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -98,14 +100,14 @@ class ManageCourseFragment : Fragment() {
         val defaultStartDate = now
         val defaultEndDate = now + 7 * 24 * 60 * 60 * 1000 // 1 tuần sau
 
-        binding.editTextStartTime.setText(CourseModel().formatTime(now))
-        binding.editTextEndTime.setText(CourseModel().formatTime(now))
-        binding.editTextStartDate.setText(CourseModel().formatDate(defaultStartDate))
-        binding.editTextEndDate.setText(CourseModel().formatDate(defaultEndDate))
+        binding.editTextStartTime.setText(formatTime(now))
+        binding.editTextEndTime.setText(formatTime(now))
+        binding.editTextStartDate.setText(formatDate(defaultStartDate))
+        binding.editTextEndDate.setText(formatDate(defaultEndDate))
 
         binding.buttonSaveCourse.setOnClickListener {
             val newCourse = createCourseFromInput()
-            viewModel.addCourse(newCourse)
+            viewModel.addCourse(newCourse, requireContext())
             findNavController().popBackStack()
         }
     }
@@ -120,7 +122,7 @@ class ManageCourseFragment : Fragment() {
 
         binding.buttonSaveCourse.setOnClickListener {
             val updatedCourse = createCourseFromInput()
-            viewModel.updateCourse(updatedCourse)
+            viewModel.updateCourse(updatedCourse, requireContext())
             findNavController().popBackStack()
         }
     }
@@ -150,16 +152,13 @@ class ManageCourseFragment : Fragment() {
         val inputType = if (editable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         binding.editTextCourseName.inputType = inputType
 
-
-
         if (editable) {
-            binding.spinnerDayOfWeek.visibility = View.VISIBLE
+            binding.spinnerFrame.visibility = View.VISIBLE
             binding.textViewDayOfWeek.visibility = View.GONE
         } else {
-            binding.spinnerDayOfWeek.visibility = View.GONE
+            binding.spinnerFrame.visibility = View.GONE
             binding.textViewDayOfWeek.visibility = View.VISIBLE
-            binding.textViewDayOfWeek.text =
-                binding.spinnerDayOfWeek.selectedItem.toString() // Hiển thị giá trị đã chọn
+            binding.textViewDayOfWeek.setText(binding.spinnerDayOfWeek.selectedItem.toString())
         }
 
 
@@ -180,10 +179,10 @@ class ManageCourseFragment : Fragment() {
         binding.spinnerDayOfWeek.setSelection(course.dayOfWeek - 1) // Enum bắt đầu từ 1
 
         // Sử dụng hàm formatTime và formatDate từ CourseModel
-        binding.editTextStartTime.setText(course.formatTime(course.startTime))
-        binding.editTextEndTime.setText(course.formatTime(course.endTime))
-        binding.editTextStartDate.setText(course.formatDate(course.startDate))
-        binding.editTextEndDate.setText(course.formatDate(course.endDate))
+        binding.editTextStartTime.setText(formatTime(course.startTime))
+        binding.editTextEndTime.setText(formatTime(course.endTime))
+        binding.editTextStartDate.setText(formatDate(course.startDate))
+        binding.editTextEndDate.setText(formatDate(course.endDate))
 
         binding.checkBoxReminder.isChecked = course.hasReminder
         binding.editTextRoom.setText(course.room ?: "")
@@ -204,7 +203,7 @@ class ManageCourseFragment : Fragment() {
                 room = binding.editTextRoom.text.toString()
 
                 // Cập nhật trong ViewModel
-                viewModel.updateCourse(this)
+                viewModel.updateCourse(this, requireContext())
             }
         } else {
             // Tạo đối tượng mới
@@ -220,7 +219,7 @@ class ManageCourseFragment : Fragment() {
                 room = binding.editTextRoom.text.toString()
 
                 // Lưu mới trong ViewModel
-                viewModel.addCourse(this)
+                viewModel.addCourse(this, requireContext())
             }
         }
     }

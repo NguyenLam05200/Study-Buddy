@@ -15,7 +15,7 @@ class BootReceiver : BroadcastReceiver() {
             val realm = DatabaseProvider.getDatabase()
             val courses = realm.query<CourseModel>("hasReminder == true").find()
             for (course in courses) {
-                NotificationScheduler.scheduleNotification(context, course)
+                NotificationScheduler.scheduleNotification(context, course.id, course.name, course.startTime)
             }
         }
     }
