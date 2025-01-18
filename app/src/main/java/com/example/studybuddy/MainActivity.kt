@@ -1,5 +1,6 @@
 package com.example.studybuddy
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Kiểm tra quyền thông báo
+        requestNotificationPermission()
+
 
         /* SharedPreferences */
         PreferencesManager.initialize(this) // this will need to be initialized once, no need to do again later
@@ -126,6 +130,35 @@ class MainActivity : AppCompatActivity() {
             (currentMode == android.content.res.Configuration.UI_MODE_NIGHT_NO && isDarkMode)
         ) {
             AppCompatDelegate.setDefaultNightMode(newMode)
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+            }
+        }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1001) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("NotificationPermission", "Permission granted!")
+            } else {
+                Log.d("NotificationPermission", "Permission denied!")
+                Snackbar.make(
+                    findViewById(R.id.drawer_layout),
+                    "Notification permission denied!",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
     }
 }

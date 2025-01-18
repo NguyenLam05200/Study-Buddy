@@ -16,9 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.studybuddy.R
 import com.example.studybuddy.data.local.model.CourseModel
 import com.example.studybuddy.databinding.FragmentManageCourseBinding
-import io.realm.kotlin.types.RealmInstant
 import java.text.SimpleDateFormat
-import java.time.ZoneOffset
 import java.util.Calendar
 import java.util.Locale
 
@@ -49,8 +47,8 @@ class ManageCourseFragment : Fragment() {
         mode = args.mode
         courseId = args.courseId
 
-            // Cấu hình Spinner
-            setupDayOfWeekSpinner()
+        // Cấu hình Spinner
+        setupDayOfWeekSpinner()
         if (mode != "DETAILS") {
             // Hiển thị DatePickerDialog khi nhấn vào editTextStartDate
             binding.editTextStartDate.setOnClickListener {
@@ -92,6 +90,7 @@ class ManageCourseFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun setupAddMode() {
         setEditable(true)
 
@@ -150,9 +149,9 @@ class ManageCourseFragment : Fragment() {
     private fun setEditable(editable: Boolean) {
         val inputType = if (editable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         binding.editTextCourseName.inputType = inputType
-//        binding.spinnerDayOfWeek.isEnabled = editable
-//        binding.spinnerDayOfWeek.isClickable = !editable
-//        binding.spinnerDayOfWeek.isFocusable = editable
+
+
+
         if (editable) {
             binding.spinnerDayOfWeek.visibility = View.VISIBLE
             binding.textViewDayOfWeek.visibility = View.GONE

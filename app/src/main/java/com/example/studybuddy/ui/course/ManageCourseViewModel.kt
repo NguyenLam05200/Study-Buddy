@@ -1,11 +1,13 @@
 package com.example.studybuddy.ui.course
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.services.NotificationService
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.types.RealmInstant
 
@@ -30,20 +32,11 @@ class ManageCourseViewModel : ViewModel() {
 
     // Cập nhật khóa học
     fun updateCourse(course: CourseModel) {
+        val notificationService = NotificationService.getInstance() // Khởi tạo NotificationService
+
         realm.writeBlocking {
             val existingCourse = query<CourseModel>("id == $0", course.id).first().find()
             if (existingCourse != null) {
-                Log.d(
-                    "ManageCourseViewModel",
-                    "Before Update - startTime: ${existingCourse.startTime}"
-                )
-                Log.d("ManageCourseViewModel", "Before Update - endTime: ${existingCourse.endTime}")
-                Log.d(
-                    "ManageCourseViewModel",
-                    "Before Update - startDate: ${existingCourse.startDate}"
-                )
-                Log.d("ManageCourseViewModel", "Before Update - endDate: ${existingCourse.endDate}")
-
                 existingCourse.name = course.name
                 existingCourse.dayOfWeek = course.dayOfWeek
                 existingCourse.startTime = course.startTime
@@ -53,11 +46,12 @@ class ManageCourseViewModel : ViewModel() {
                 existingCourse.hasReminder = course.hasReminder
                 existingCourse.room = course.room
 
-                Log.d(
-                    "ManageCourseViewModel",
-                    "After Update - startTime: ${existingCourse.startTime}"
+                // Bắn thông báo sau khi cập nhật thành công
+                notificationService.pushNotification(
+                    title = "Course Updated",
+                    message = "Course '${course.name}' has been updated!",
+                    notificationId = course.id.toInt()
                 )
-                Log.d("ManageCourseViewModel", "After Update - endTime: ${existingCourse.endTime}")
             } else {
                 Log.e("ManageCourseViewModel", "Course with id ${course.id} not found!")
             }

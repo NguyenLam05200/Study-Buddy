@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <!-- Tên khóa học -->
             <TextView
                 android:id="@+id/textViewCourseNameLabel"
@@ -35,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter course name"
-                android:inputType="text" />
+                android:inputType="none" />
 
             <!-- Ngày trong tuần -->
             <TextView
@@ -155,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter room (optional)"
-                android:inputType="text" />
+                android:inputType="none" />
 
             <!-- Checkbox Reminder -->
             <CheckBox

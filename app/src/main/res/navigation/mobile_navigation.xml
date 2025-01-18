@@ -49,7 +49,7 @@
         android:id="@+id/manage_course_frag"
         android:name="com.example.studybuddy.ui.course.ManageCourseFragment"
         android:label="@string/course_manage"
-        tools:layout="@layout/fragment_add_course">
+        tools:layout="@layout/fragment_manage_course">
         <argument
             android:name="courseId"
             app:argType="long"
