@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudyBuddy</string>
+    <string name="menu_course">Khoá học</string>
+    <string name="menu_settings">Cài đặt</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_dateformat">Định dạng ngày tháng</string>
+    <string name="settings_notification">Thông báo</string>
+    <string name="settings_fontsize">Kích cỡ font</string>
+    <string name="settings_about">Về app</string>
+</resources>

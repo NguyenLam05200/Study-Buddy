@@ -12,10 +12,22 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/gallery_frag"
-        android:name="com.example.studybuddy.ui.gallery.gallery_frag"
+        android:id="@+id/register_frag"
+        android:name="com.example.studybuddy.ui.account.register_frag"
+        android:label="Register"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/deadline_add"
+        android:name="com.example.studybuddy.ui.deadline.deadline_add_frag"
+        android:label="Deadline Add"
+        tools:layout="@layout/fragment_deadline_add" />
+
+    <fragment
+        android:id="@+id/login_frag"
+        android:name="com.example.studybuddy.ui.account.login_frag"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_login" />
 
     <fragment
         android:id="@+id/slideshow_frag"

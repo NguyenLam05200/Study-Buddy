@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.deadline.deadline_add_frag">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/name_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="0dp"
+
+            android:gravity="center_vertical"
+            android:text="@string/deadline_add_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginStart="@dimen/default_border_margin"
+            android:layout_marginEnd="@dimen/default_border_margin"
+            android:layout_marginTop="0dp"
+
+            android:background="@drawable/element_account_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_textview" />
+
+        <TextView
+            android:id="@+id/datehour_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/deadline_add_datehour"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_edittext" />
+
+        <EditText
+            android:id="@+id/date_edittext"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+
+            android:background="@drawable/element_account_edittext"
+            android:inputType="text"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/datehour_textview"
+            app:layout_constraintWidth_percent="0.45" />
+
+        <ImageButton
+            android:id="@+id/date_button"
+            android:layout_width="@dimen/datebutton_width"
+            android:layout_height="@dimen/datebutton_width"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/default_border_margin"
+
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_calendar"
+            app:layout_constraintEnd_toEndOf="@id/date_edittext"
+            app:layout_constraintTop_toTopOf="@id/date_edittext" />
+
+        <EditText
+            android:id="@+id/hour_edittext"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/default_border_margin"
+            android:layout_marginTop="0dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+
+            android:background="@drawable/element_account_edittext"
+            android:inputType="text"
+            android:text=""
+            app:layout_constraintStart_toEndOf="@id/date_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/datehour_textview"
+            app:layout_constraintWidth_percent="0.45" />
+
+        <ImageButton
+            android:id="@+id/hour_button"
+            android:layout_width="@dimen/datebutton_width"
+            android:layout_height="@dimen/datebutton_width"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/default_border_margin"
+
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_calendar"
+            app:layout_constraintEnd_toEndOf="@id/hour_edittext"
+            app:layout_constraintTop_toTopOf="@id/hour_edittext" />
+
+        <TextView
+            android:id="@+id/note_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/settings_margin_between_each"
+
+            android:gravity="center_vertical"
+            android:text="@string/deadline_add_note"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_edittext" />
+
+        <EditText
+            android:id="@+id/note_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+
+            android:background="@drawable/element_account_edittext"
+            android:gravity="center_vertical"
+            android:hint="Some note here"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_textview" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_bottom_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:layout_marginBottom="@dimen/default_border_margin"
+
+            android:text="@string/deadline_add_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

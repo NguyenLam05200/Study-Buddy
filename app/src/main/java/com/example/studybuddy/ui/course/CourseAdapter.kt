@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studybuddy.R
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.utils.DateUtils
 
 class CourseAdapter(
     private val onAction: (CourseModel, Action) -> Unit,

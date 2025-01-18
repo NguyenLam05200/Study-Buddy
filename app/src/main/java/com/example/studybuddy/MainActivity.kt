@@ -1,6 +1,7 @@
 package com.example.studybuddy
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.ViewGroup
 import android.widget.Switch
@@ -17,15 +18,26 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.studybuddy.databinding.NavigationBarBinding
+import com.example.studybuddy.utilities.CONF
+import com.example.studybuddy.utilities.PreferencesManager
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: NavigationBarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /* SharedPreferences */
+        PreferencesManager.initialize(this) // this will need to be initialized once, no need to do again later
+        val isDarkMode = PreferencesManager.getBoolean(CONF.SWITCH_BUTTON_KEY, false)
+        val language = PreferencesManager.getString(CONF.LANGUAGE_KEY, "English")
+        val language_code = getLanguageCode(language!!)
+        //Log.d("LANGUAGE", "Language: ${language}, code: ${language_code}")
+
+        updateUILanguage(language_code)
+
+        /* View */
         binding = NavigationBarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -36,26 +48,21 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab).show()
         }
+
+        /* XML Layout */
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         val headerView = navView.getHeaderView(0) // Lấy header layout
-
-        // Lấy Switch từ header layout
         val switchButton = headerView.findViewById<Switch>(R.id.switchButton)
 
-        // Sử dụng SharedPreferences
-        val sharedPreferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
         // Khởi tạo trạng thái Switch dựa trên SharedPreferences
-        val isDarkMode = sharedPreferences.getBoolean(SWITCH_BUTTON_KEY, false)
         switchButton.isChecked = isDarkMode
         updateUIMode(isDarkMode)
 
         // Lắng nghe sự kiện thay đổi trạng thái của Switch
         switchButton.setOnCheckedChangeListener { _, isChecked ->
-            editor.putBoolean(SWITCH_BUTTON_KEY, isChecked).apply()
+            PreferencesManager.putBoolean(CONF.SWITCH_BUTTON_KEY, isChecked)
             updateUIMode(isChecked)
         }
 
@@ -73,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.home_frag, R.id.gallery_frag, R.id.slideshow_frag, R.id.course_frag, R.id.settings_frag
+                R.id.home_frag, R.id.course_frag, R.id.settings_frag
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -91,21 +98,35 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    // only works for supported languages
+    private fun getLanguageCode(language: String): String {
+        val pos = CONF.languages.indexOf(language)
+
+        return CONF.language_codes[pos]
+    }
+
+    private fun updateUILanguage(language_code: String) {
+        val locale = java.util.Locale(language_code)
+        java.util.Locale.setDefault(locale)
+
+        val config = android.content.res.Configuration(resources.configuration)
+        config.setLocale(locale)
+
+        // Update the configuration
+        this.resources.updateConfiguration(
+            config, this.resources.displayMetrics
+        )
+    }
+
     private fun updateUIMode(isDarkMode: Boolean) {
         val currentMode = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
         val newMode = if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
 
         if ((currentMode == android.content.res.Configuration.UI_MODE_NIGHT_YES && !isDarkMode) ||
-            (currentMode == android.content.res.Configuration.UI_MODE_NIGHT_NO && isDarkMode)) {
+            (currentMode == android.content.res.Configuration.UI_MODE_NIGHT_NO && isDarkMode)
+        ) {
             AppCompatDelegate.setDefaultNightMode(newMode)
         }
     }
-
-
-    companion object {
-        const val SWITCH_BUTTON_KEY = "switch"
-        const val PREF_KEY = "pref"
-    }
-
 }
 
