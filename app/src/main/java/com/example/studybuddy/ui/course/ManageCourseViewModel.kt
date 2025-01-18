@@ -5,81 +5,84 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.studybuddy.data.local.DatabaseProvider
+import androidx.lifecycle.viewModelScope
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.data.repository.CourseRepository
 import com.example.studybuddy.services.NotificationScheduler
-import com.example.studybuddy.services.NotificationService
+import com.example.studybuddy.utilities.reminderCourseNoti
 import com.example.studybuddy.utilities.showToast
-import io.realm.kotlin.ext.query
-import io.realm.kotlin.types.RealmInstant
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class ManageCourseViewModel : ViewModel() {
-
-    private val realm = DatabaseProvider.getDatabase() // Khởi tạo database
+class ManageCourseViewModel(val repository: CourseRepository) : ViewModel() {
+    private val _updateStatus = MutableLiveData<Boolean>()
+    val updateStatus: LiveData<Boolean> get() = _updateStatus
 
     // Lấy khóa học theo ID
-    fun getCourseById(courseId: Long): LiveData<CourseModel?> {
+    fun getCourseById(courseId: Int): LiveData<CourseModel?> {
         val liveData = MutableLiveData<CourseModel?>()
-        val course = realm.query<CourseModel>("id == $0", courseId).first().find()
-        liveData.postValue(course)
+        viewModelScope.launch {
+            liveData.postValue(repository.getCourseById(courseId))
+        }
         return liveData
     }
 
     // Thêm mới khóa học
     fun addCourse(course: CourseModel, context: Context) {
-        realm.writeBlocking {
-            copyToRealm(course)
-        }
-        showToast(context, "Course added successfully!")
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.addCourse(course)
+                }
+                Log.d("ManageCourseViewModel", "Added success: ${course.startTime}")
 
-        if (course.hasReminder) {
-            NotificationScheduler.scheduleNotification(
-                context,
-                course.id,
-                course.name,
-                course.startTime
-            )
+                withContext(Dispatchers.Main) {
+                    _updateStatus.value = true // Cập nhật trạng thái thành công
+                    showToast(context, "Course added successfully!")
+                    if (course.hasReminder) {
+                        reminderCourseNoti(context, course)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("ManageCourseViewModel", "Failed to add new course: ${e.message}")
+                _updateStatus.value = false // Cập nhật trạng thái thất bại
+            }
         }
+
+
+//        viewModelScope.launch {
+//            repository.addCourse(course)
+//            showToast(context, "Course added successfully!")
+//
+//            if (course.hasReminder) {
+//                reminderCourseNoti(context, course)
+//            }
+//        }
     }
 
     // Cập nhật khóa học
-    fun updateCourse(course: CourseModel, context: Context) {
-        val notificationService = NotificationService.getInstance() // Khởi tạo NotificationService
-
-        realm.writeBlocking {
-            val existingCourse = query<CourseModel>("id == $0", course.id).first().find()
-            if (existingCourse != null) {
-                existingCourse.name = course.name
-                existingCourse.dayOfWeek = course.dayOfWeek
-                existingCourse.startTime = course.startTime
-                existingCourse.endTime = course.endTime
-                existingCourse.startDate = course.startDate
-                existingCourse.endDate = course.endDate
-                existingCourse.hasReminder = course.hasReminder
-                existingCourse.room = course.room
-
-                // Bắn thông báo sau khi cập nhật thành công
-                notificationService.pushNotification(
-                    title = "Course Updated",
-                    message = "Course '${course.name}' has been updated!",
-                    notificationId = course.id.toInt()
-                )
-
-                showToast(context, "Course updated successfully!")
-
-                if (course.hasReminder) {
-                    NotificationScheduler.scheduleNotification(
-                        context,
-                        course.id,
-                        course.name,
-                        course.startTime
-                    )
-                } else {
-                    NotificationScheduler.cancelNotification(context, course.id)
+    fun updateCourse(course: CourseModel, context: Context, onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.updateCourse(course)
                 }
-            } else {
-                Log.e("ManageCourseViewModel", "Course with id ${course.id} not found!")
+                withContext(Dispatchers.Main) {
+                    showToast(context, "Course updated successfully!")
+                    if (course.hasReminder) {
+                        reminderCourseNoti(context, course)
+                    } else {
+                        NotificationScheduler.cancelNotification(context, course.id)
+                    }
+                    onComplete(true) // Báo hiệu thành công
+                }
+            } catch (e: Exception) {
+                Log.e("ManageCourseViewModel", "Failed to update course: ${e.message}")
+                onComplete(false) // Báo hiệu thất bại
             }
         }
     }
+
+
 }

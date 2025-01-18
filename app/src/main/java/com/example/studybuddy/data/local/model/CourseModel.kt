@@ -11,7 +11,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import java.time.DayOfWeek
 class CourseModel : RealmObject {
     @PrimaryKey
-    var id: Long = 0
+    var id: Int = 0
     var name: String = ""
     var dayOfWeek: Int = DayOfWeek.MONDAY.value // Giá trị từ enum
     var startTime: Long = System.currentTimeMillis() // Milliseconds

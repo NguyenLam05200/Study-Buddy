@@ -8,10 +8,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.studybuddy.AppViewModelFactory
 import com.example.studybuddy.R
 import com.example.studybuddy.data.repository.CourseRepository
 import com.example.studybuddy.data.local.DatabaseProvider
@@ -21,15 +23,20 @@ import kotlinx.coroutines.launch
 class CourseFragment : Fragment() {
 
     // Initialize Realm and ViewModel
-    val viewModel: CourseViewModel by viewModels {
-        val realm = DatabaseProvider.getDatabase()
-        CourseViewModelFactory(CourseRepository(realm))
-    }
+    private lateinit var viewModel: CourseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Khởi tạo repository và factory
+        val repository = CourseRepository(DatabaseProvider.getDatabase())
+        val factory = AppViewModelFactory(repository)
+
+        // Sử dụng factory để tạo ViewModel
+        viewModel = ViewModelProvider(this, factory)[CourseViewModel::class.java]
+
+
         val rootView = inflater.inflate(R.layout.fragment_course, container, false)
 
         // Set up RecyclerView
@@ -85,13 +92,13 @@ class CourseFragment : Fragment() {
 
     private fun navigateToAddCourse() {
         val action = CourseFragmentDirections.actionCourseFragToManageCourseFrag(
-            courseId = -1L, // Giá trị mặc định cho chế độ ADD
+            courseId = -1, // Giá trị mặc định cho chế độ ADD
             mode = "ADD"
         )
         findNavController().navigate(action)
     }
 
-    private fun navigateToEditCourse(courseId: Long) {
+    private fun navigateToEditCourse(courseId: Int) {
         // Navigate to EditCourseFragment
         val action = CourseFragmentDirections.actionCourseFragToManageCourseFrag(
             courseId = courseId,
@@ -100,7 +107,7 @@ class CourseFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun navigateToCourseDetails(courseId: Long) {
+    private fun navigateToCourseDetails(courseId: Int) {
         val action = CourseFragmentDirections.actionCourseFragToManageCourseFrag(
             courseId = courseId,
             mode = "DETAILS"

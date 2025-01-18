@@ -1,5 +1,7 @@
 package com.example.studybuddy.data.repository
 
+import android.util.Log
+import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.CourseModel
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -16,17 +18,30 @@ class CourseRepository(private val realm: Realm) {
         return realm.query<CourseModel>().count().find() == 0L
     }
 
+    suspend fun getCourseById(courseId: Int): CourseModel? {
+        return realm.query<CourseModel>("id == $0", courseId).first().find()
+    }
+
+
     suspend fun addCourses(courses: List<CourseModel>) {
         realm.write {
-            courses.forEach { copyToRealm(it) }
+            var nextId = DatabaseProvider.generateAutoIncrementId() // Lấy ID bắt đầu
+
+            courses.forEach { course ->
+                course.id = nextId // Gán ID tự động
+                copyToRealm(course)
+                nextId++ // Tăng ID cho lần tiếp theo
+            }
         }
     }
 
     suspend fun addCourse(course: CourseModel) {
         realm.write {
+            course.id = DatabaseProvider.generateAutoIncrementId() // Tạo ID tự động
             copyToRealm(course)
         }
     }
+
 
     suspend fun deleteCourse(course: CourseModel) {
         realm.write {
@@ -35,18 +50,32 @@ class CourseRepository(private val realm: Realm) {
     }
 
     suspend fun updateCourse(course: CourseModel) {
-        realm.write {
-            findLatest(course)?.apply {
-                name = course.name
-                dayOfWeek = course.dayOfWeek
-                startTime = course.startTime
-                endTime = course.endTime
-                startDate = course.startDate
-                endDate = course.endDate
-                hasReminder = course.hasReminder
-                room = course.room
+        try {
+            realm.write {
+                // Query the managed object from Realm
+                val managedCourse = query<CourseModel>("id == $0", course.id).first().find()
+                if (managedCourse != null) {
+                    managedCourse.apply {
+                        name = course.name
+                        dayOfWeek = course.dayOfWeek
+                        startTime = course.startTime
+                        endTime = course.endTime
+                        startDate = course.startDate
+                        endDate = course.endDate
+                        hasReminder = course.hasReminder
+                        room = course.room
+                    }
+                    Log.d("____Repo", "updateCourse success: ${managedCourse.startTime}")
+                } else {
+                    Log.e("____Repo", "updateCourse failed: Course not found with id ${course.id}")
+                }
             }
+        } catch (e: Exception) {
+            Log.e("____RepoError", "updateCourse failed: ${e.message}", e)
+            throw e
         }
     }
+
+
 }
 

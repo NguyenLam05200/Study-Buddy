@@ -1,9 +1,11 @@
 package com.example.studybuddy.data.local
 
 import android.content.Context
+import android.util.Log
 import com.example.studybuddy.data.local.model.CourseModel
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
+import io.realm.kotlin.ext.query
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -31,6 +33,14 @@ object DatabaseProvider {
             realm = Realm.open(config)
         }
         return realm!!
+    }
+
+    // Hàm tạo ID tự động tăng
+    @Synchronized
+    fun generateAutoIncrementId(): Int {
+        val currentRealm = getDatabase()
+        val maxId = currentRealm.query<CourseModel>().max("id", Int::class).find() ?: 0
+        return maxId + 1
     }
 }
 

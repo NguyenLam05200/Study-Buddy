@@ -58,5 +58,6 @@
         <item>Sunday</item>
     </string-array>
 
-
+    <string name="welcome_title">Welcome to Study Buddy!</string>
+    <string name="welcome_message">Thank you for installing the app. Let\'s get started</string>
 </resources>

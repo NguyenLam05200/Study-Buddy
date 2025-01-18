@@ -9,38 +9,40 @@ import java.util.Calendar
 object NotificationScheduler {
     fun scheduleNotification(
         context: Context,
-        courseId: Long,
-        courseName: String,
-        startTimeMillis: Long
+        notificationId: Int,
+        title: String,
+        message: String,
+        channelId: String,
+        triggerAtMillis: Long
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("courseName", courseName)
-            putExtra("startTime", startTimeMillis) // Pass as Long
-            putExtra("notificationId", courseId.toInt()) // Unique notification ID
+            putExtra("title", title)
+            putExtra("message", message)
+            putExtra("channelId", channelId)
+            putExtra("notificationId", notificationId)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            courseId.toInt(),
+            notificationId,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            startTimeMillis - 5 * 60 * 1000, // 5 minutes before startTimeMillis
+            triggerAtMillis,
             pendingIntent
         )
     }
 
-
-    fun cancelNotification(context: Context, courseId: Long) {
+    fun cancelNotification(context: Context, notificationId: Int) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            courseId.toInt(),
+            notificationId,
             intent,
             PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
         )
@@ -49,5 +51,6 @@ object NotificationScheduler {
             alarmManager.cancel(pendingIntent)
         }
     }
+
 }
 

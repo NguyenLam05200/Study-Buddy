@@ -1,11 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">StudyBuddy</string>
-    <string name="menu_course">Khoá học</string>
+    <string name="app_name" translatable="false">StudyBuddy</string>
+    <string name="navigation_drawer_open">Mở thanh điều hướng</string>
+    <string name="navigation_drawer_close">Đóng thanh điều hướng</string>
+    <string name="nav_header_title">Study Buddy</string>
+    <string name="nav_header_subtitle">18120433@student.hcmus.edu.vn</string>
+    <string name="nav_header_desc">Tiêu đề điều hướng</string>
+    <string name="action_settings">Cài đặt</string>
+
+    <string name="account_email">EMAIL</string>
+    <string name="account_password">MẬT KHẨU</string>
+    <string name="account_register_button">ĐĂNG KÝ</string>
+    <string name="account_login_button">ĐĂNG NHẬP</string>
+
+    <string name="menu_home">Trang chủ</string>
+    <string name="menu_gallery">Thư viện</string>
+    <string name="menu_slideshow">Trình chiếu</string>
+    <string name="menu_course">Khóa học</string>
     <string name="menu_settings">Cài đặt</string>
+
     <string name="settings_language">Ngôn ngữ</string>
-    <string name="settings_dateformat">Định dạng ngày tháng</string>
+    <string name="settings_dateformat">Định dạng ngày giờ</string>
     <string name="settings_notification">Thông báo</string>
-    <string name="settings_fontsize">Kích cỡ font</string>
-    <string name="settings_about">Về app</string>
+    <string name="settings_fontsize">Cỡ chữ</string>
+    <string name="settings_googledrive" translatable="false">Google Drive</string>
+    <string name="settings_about">Giới thiệu</string>
+
+    <string name="deadline_add_name">Tên thông báo</string>
+    <string name="deadline_add_datehour">Ngày &amp; Giờ</string>
+    <string name="deadline_add_note">Ghi chú</string>
+    <string name="deadline_add_button">Thêm thông báo</string>
+
+    <string name="course_addcourse">Thêm khóa học</string>
+    <string name="no_courses_available">Không có khóa học nào</string>
+    <string name="edit_course">Chỉnh sửa khóa học</string>
+    <string name="delete_course">Xóa khóa học</string>
+    <string name="new_course">Khóa học mới</string>
+    <string name="course_manage">Quản lý khóa học</string>
+    <string name="label_course_name">Tên khóa học</string>
+    <string name="hint_course_name">Nhập tên khóa học</string>
+    <string name="label_course_time">Thời gian học</string>
+    <string name="hint_course_time">Nhập thời gian học</string>
+    <string name="label_course_date">Ngày học</string>
+    <string name="hint_course_date">Nhập ngày học</string>
+    <string name="label_reminder">Nhắc nhở</string>
+    <string name="label_course">Khóa học</string>
+    <string name="label_course_list">Danh sách khóa học</string>
+    <string name="label_course_detail">Chi tiết khóa học</string>
+    <string name="button_save">Lưu</string>
+    <string-array name="days_of_week">
+        <item>Thứ Hai</item>
+        <item>Thứ Ba</item>
+        <item>Thứ Tư</item>
+        <item>Thứ Năm</item>
+        <item>Thứ Sáu</item>
+        <item>Thứ Bảy</item>
+        <item>Chủ Nhật</item>
+    </string-array>
+
+    <string name="welcome_title">Chào mừng đến với Study Buddy!</string>
+    <string name="welcome_message">Cảm ơn bạn đã cài đặt ứng dụng. Hãy bắt đầu nào!</string>
 </resources>

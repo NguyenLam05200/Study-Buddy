@@ -11,13 +11,23 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.studybuddy.AppViewModelFactory
 import com.example.studybuddy.R
+import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.data.repository.CourseRepository
 import com.example.studybuddy.databinding.FragmentManageCourseBinding
 import com.example.studybuddy.utilities.formatDate
 import com.example.studybuddy.utilities.formatTime
+import com.example.studybuddy.utilities.showToast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -28,18 +38,31 @@ class ManageCourseFragment : Fragment() {
         fun newInstance() = ManageCourseFragment()
     }
 
-    private val viewModel: ManageCourseViewModel by viewModels()
+    private lateinit var viewModel: ManageCourseViewModel
     private val args: ManageCourseFragmentArgs by navArgs()
     private var _binding: FragmentManageCourseBinding? = null
     private val binding get() = _binding!!
     private var mode: String? = null
-    private var courseId: Long? = null
+    private var courseId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentManageCourseBinding.inflate(inflater, container, false)
+        // Khởi tạo repository và factory
+        val repository = CourseRepository(DatabaseProvider.getDatabase())
+        val factory = AppViewModelFactory(repository)
+
+        // Sử dụng factory để tạo ViewModel
+        viewModel = ViewModelProvider(this, factory)[ManageCourseViewModel::class.java]
+
+        viewModel.updateStatus.observe(viewLifecycleOwner) { isSuccess ->
+            if (isSuccess) {
+                findNavController().popBackStack()
+            }
+        }
+
         return binding.root
     }
 
@@ -108,7 +131,6 @@ class ManageCourseFragment : Fragment() {
         binding.buttonSaveCourse.setOnClickListener {
             val newCourse = createCourseFromInput()
             viewModel.addCourse(newCourse, requireContext())
-            findNavController().popBackStack()
         }
     }
 
@@ -122,9 +144,13 @@ class ManageCourseFragment : Fragment() {
 
         binding.buttonSaveCourse.setOnClickListener {
             val updatedCourse = createCourseFromInput()
-            viewModel.updateCourse(updatedCourse, requireContext())
-            findNavController().popBackStack()
+            viewModel.updateCourse(updatedCourse, requireContext()) { isSuccess ->
+                if (isSuccess) {
+                    findNavController().popBackStack()
+                }
+            }
         }
+
     }
 
     private fun setupDetailsMode() {
@@ -203,12 +229,15 @@ class ManageCourseFragment : Fragment() {
                 room = binding.editTextRoom.text.toString()
 
                 // Cập nhật trong ViewModel
-                viewModel.updateCourse(this, requireContext())
+                viewModel.updateCourse(this, requireContext()) { isSuccess ->
+                    if (isSuccess) {
+                        findNavController().popBackStack()
+                    }
+                }
             }
         } else {
             // Tạo đối tượng mới
             CourseModel().apply {
-                id = System.currentTimeMillis()
                 name = binding.editTextCourseName.text.toString()
                 dayOfWeek = binding.spinnerDayOfWeek.selectedItemPosition + 1 // Enum bắt đầu từ 1
                 startTime = stringToTimestamp(binding.editTextStartTime.text.toString(), "HH:mm")

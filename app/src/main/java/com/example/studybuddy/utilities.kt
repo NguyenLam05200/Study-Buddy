@@ -8,6 +8,9 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.studybuddy.data.local.DateUtils
+import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.services.NotificationScheduler
+import com.example.studybuddy.services.NotificationService
 
 object CONF {
     var sharedPreferences: SharedPreferences? = null
@@ -120,4 +123,16 @@ fun formatTimeRange(startTime: Long, endTime: Long): String {
 
 fun formatDateRange(startDate: Long, endDate: Long): String {
     return "${formatDate(startDate)} - ${formatDate(endDate)}"
+}
+
+
+fun reminderCourseNoti(context: Context, course: CourseModel) {
+    NotificationScheduler.scheduleNotification(
+        context = context,
+        notificationId = course.id,
+        title = "Reminder: ${course.name}",
+        message = "Sắp ${formatTime(course.startTime)}, tới giờ học rồi!",
+        channelId = NotificationService.COURSE_REMINDER_CHANNEL,
+        triggerAtMillis = course.startTime - 5 * 60 * 1000 // 5 phút trước giờ học
+    )
 }

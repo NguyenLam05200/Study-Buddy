@@ -52,12 +52,12 @@
         tools:layout="@layout/fragment_manage_course">
         <argument
             android:name="courseId"
-            app:argType="long"
-            android:defaultValue="-1L" /> <!-- Giá trị mặc định khi không có CourseID -->
+            app:argType="integer"
+            android:defaultValue="-1" />
         <argument
             android:name="mode"
             app:argType="string"
-            android:defaultValue="ADD" /> <!-- Giá trị mặc định -->
+            android:defaultValue="ADD" />
     </fragment>
 
     <fragment
