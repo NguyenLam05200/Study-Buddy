@@ -9,7 +9,11 @@
         android:id="@+id/home_frag"
         android:name="com.example.studybuddy.ui.home.home_frag"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_frag_to_manage_course_frag"
+            app:destination="@id/manage_course_frag" />
+    </fragment>
 
     <fragment
         android:id="@+id/register_frag"
@@ -39,7 +43,7 @@
         android:id="@+id/course_frag"
         android:name="com.example.studybuddy.ui.course.CourseFragment"
         android:label="@string/menu_course"
-        tools:layout="@layout/fragment_course" >
+        tools:layout="@layout/fragment_course">
         <action
             android:id="@+id/action_course_frag_to_manage_course_frag"
             app:destination="@id/manage_course_frag" />
@@ -52,12 +56,12 @@
         tools:layout="@layout/fragment_manage_course">
         <argument
             android:name="courseId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <argument
             android:name="mode"
-            app:argType="string"
-            android:defaultValue="ADD" />
+            android:defaultValue="ADD"
+            app:argType="string" />
     </fragment>
 
     <fragment

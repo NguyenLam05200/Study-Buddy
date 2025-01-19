@@ -5,6 +5,7 @@ import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.CourseModel
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.Sort
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -76,6 +77,18 @@ class CourseRepository(private val realm: Realm) {
         }
     }
 
+    fun logAllCourses() {
+        val courses = realm.query<CourseModel>().find()
+        Log.d("____Repo", "Total Courses in Realm: ${courses.size}")
+        courses.forEach {
+            Log.d("____Repo", "Course: ${it.name}, startTime: ${it.startTime}, currentTime: ${System.currentTimeMillis()}")
+        }
+    }
 
+    suspend fun getUpcomingCourses(limit: Int): List<CourseModel> {
+        val courses = realm.query<CourseModel>().find()
+
+        return courses
+    }
 }
 

@@ -9,7 +9,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.studybuddy.AppViewModelFactory
+import com.example.studybuddy.R
+import com.example.studybuddy.data.local.DatabaseProvider
+import com.example.studybuddy.data.repository.CourseRepository
 import com.example.studybuddy.databinding.FragmentHomeBinding
+import com.example.studybuddy.ui.course.CourseAdapter
+import com.example.studybuddy.ui.course.CourseFragmentDirections
+import com.example.studybuddy.ui.course.CourseViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 data class Quote(val content: String, val author: String)
 private val quotes = listOf(
@@ -71,22 +84,27 @@ class home_frag : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val handler = Handler(Looper.getMainLooper())
-
     private lateinit var quoteAdapter: QuoteAdapter
+    private lateinit var viewModel: home_vm
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(home_vm::class.java)
+        // Khởi tạo repository và factory
+        val repository = CourseRepository(DatabaseProvider.getDatabase())
+        val factory = AppViewModelFactory(repository)
+
+        // Sử dụng factory để tạo ViewModel
+        viewModel = ViewModelProvider(this, factory)[home_vm::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        homeViewModel.text.observe(viewLifecycleOwner) {
-        }
+        val root: View = binding.root
+//        setupRecyclerView(root)
+
         return root
     }
 
@@ -107,6 +125,29 @@ class home_frag : Fragment() {
 
         // Auto-slide
         startAutoSlide()
+
+        // Courses Adapter
+        val courseAdapter = CourseAdapter(
+            onAction = { course, action ->
+                when (action) {
+                    CourseAdapter.Action.EDIT -> navigateToEditCourse(course.id)
+                    CourseAdapter.Action.DELETE -> viewModel.deleteCourse(course)
+                }
+            },
+            onItemClick = { course ->
+                navigateToCourseDetails(course.id)
+            }
+        )
+        binding.recyclerViewUpcomingCourses.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewUpcomingCourses.adapter = courseAdapter
+
+        // Observe upcoming courses
+        viewModel.upcomingCourses.observe(viewLifecycleOwner) { courses ->
+            courseAdapter.submitList(courses)
+        }
+
+        // Fetch data
+        viewModel.fetchUpcomingCourses()
     }
 
     private fun startAutoSlide() {
@@ -124,5 +165,32 @@ class home_frag : Fragment() {
         super.onDestroyView()
         _binding = null
         handler.removeCallbacksAndMessages(null) // Stop auto-slide when fragment is destroyed
+    }
+
+
+    private fun navigateToAddCourse() {
+
+        val action = home_fragDirections.actionHomeFragToManageCourseFrag(
+            courseId = -1, // Giá trị mặc định cho chế độ ADD
+            mode = "ADD"
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToEditCourse(courseId: Int) {
+        // Navigate to EditCourseFragment
+        val action = home_fragDirections.actionHomeFragToManageCourseFrag(
+            courseId = courseId,
+            mode = "EDIT"
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToCourseDetails(courseId: Int) {
+        val action = home_fragDirections.actionHomeFragToManageCourseFrag(
+            courseId = courseId,
+            mode = "DETAILS"
+        )
+        findNavController().navigate(action)
     }
 }
