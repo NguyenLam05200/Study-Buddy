@@ -1,66 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="true">
 
-    <!-- Tên khóa học -->
-    <TextView
-        android:id="@+id/textViewCourseName"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Course Name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/buttonEditCourse"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@drawable/course_card_gradient"
+        android:padding="16dp">
 
-    <!-- Thời gian khóa học -->
-    <TextView
-        android:id="@+id/textViewCourseTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Monday, 10:00 AM - 12:00 PM"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/buttonEditCourse"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCourseName" />
+        <!-- Tên khóa học -->
+        <TextView
+            android:id="@+id/textViewCourseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="4dp"
+            android:letterSpacing="0.03"
+            android:text="Course Name"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <!-- Thời gian khóa học -->
-    <TextView
-        android:id="@+id/textViewCourseDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="21/09/2024 - 20/01/2025"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/buttonEditCourse"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewCourseTime" />
+        <!-- Thời gian khóa học -->
+        <TextView
+            android:id="@+id/textViewCourseTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewCourseName"
+            android:layout_marginTop="4dp"
+            android:letterSpacing="0.02"
+            android:text="Monday, 10:00 AM - 12:00 PM"
+            android:textColor="#505050"
+            android:textSize="16sp" />
 
-    <!-- Nút chỉnh sửa -->
-    <ImageButton
-        android:id="@+id/buttonEditCourse"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/edit_course"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/buttonDeleteCourse"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!-- Ngày khóa học -->
+        <TextView
+            android:id="@+id/textViewCourseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewCourseTime"
+            android:layout_marginTop="6dp"
+            android:letterSpacing="0.02"
+            android:text="21/09/2024 - 20/01/2025"
+            android:textColor="#505050"
+            android:textSize="16sp" />
 
-    <!-- Nút xóa -->
-    <ImageButton
-        android:id="@+id/buttonDeleteCourse"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/delete_course"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!-- Nút chỉnh sửa -->
+        <ImageButton
+            android:id="@+id/buttonEditCourse"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/buttonDeleteCourse"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/edit_course"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/material_dynamic_secondary20" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Nút xóa -->
+        <ImageButton
+            android:id="@+id/buttonDeleteCourse"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/delete_course"
+            android:src="@drawable/ic_delete"
+            app:tint="#FF3B30" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
