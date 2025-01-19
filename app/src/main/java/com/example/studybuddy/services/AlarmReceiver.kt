@@ -17,7 +17,7 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationService.pushNotification(
             title = title,
             message = message,
-            notificationIdKey = notificationId,
+            notificationIdKey = notificationId.toString() + channelId,
             channelId = channelId
         )
     }

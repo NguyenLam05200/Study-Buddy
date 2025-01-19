@@ -83,6 +83,4 @@ class ManageCourseViewModel(val repository: CourseRepository) : ViewModel() {
             }
         }
     }
-
-
 }

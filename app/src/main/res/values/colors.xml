@@ -13,4 +13,5 @@
     <color name="yellow_soft">#FFFDFDBD</color>
     <color name="gray">#FF8C8C8C</color>
     <color name="light_gray">#D3D3D3</color>
+    <color name="primaryTextColor">#FF000000</color> <!-- Màu đen -->
 </resources>

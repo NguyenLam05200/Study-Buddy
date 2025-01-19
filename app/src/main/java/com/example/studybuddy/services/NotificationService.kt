@@ -52,7 +52,7 @@ class NotificationService private constructor(context: Context) {
     }
 
     fun pushNotification(
-        title: String, message: String, notificationIdKey: Int, channelId: String
+        title: String, message: String, notificationIdKey: String, channelId: String
     ) {
         // Kiểm tra quyền POST_NOTIFICATIONS
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {

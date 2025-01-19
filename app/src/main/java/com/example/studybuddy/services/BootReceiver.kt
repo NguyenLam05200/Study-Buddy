@@ -12,7 +12,9 @@ import io.realm.kotlin.ext.query
 // Đặt lại các alarm khi thiết bị khởi động lại.
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d("_____Test", "BootReceiver: onReceive")
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            Log.d("_____Test", "BootReceiver: ACTION_BOOT_COMPLETED")
             val alarmManager =
                 context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S &&

@@ -14,7 +14,7 @@ val defaultCourses = listOf(
         dayOfWeek = DayOfWeek.MONDAY.value
         startTime = 1737358800000L
         endTime = 1737368400000L
-        startDate = 1758326400000L
+        startDate = 1726790400000L
         endDate = 1737331200000L
         hasReminder = true
         room = "D211"
@@ -22,7 +22,7 @@ val defaultCourses = listOf(
     CourseModel().apply {
         name = "Lập trình web"
         dayOfWeek = DayOfWeek.TUESDAY.value
-        startTime = 1737358800000L
+        startTime = 1726790400000L
         endTime = 1737368400000L
         startDate = 1758326400000L
         endDate = 1737331200000L

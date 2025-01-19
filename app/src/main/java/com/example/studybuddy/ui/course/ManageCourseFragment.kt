@@ -3,16 +3,14 @@ package com.example.studybuddy.ui.course
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.studybuddy.AppViewModelFactory
@@ -23,11 +21,6 @@ import com.example.studybuddy.data.repository.CourseRepository
 import com.example.studybuddy.databinding.FragmentManageCourseBinding
 import com.example.studybuddy.utilities.formatDate
 import com.example.studybuddy.utilities.formatTime
-import com.example.studybuddy.utilities.showToast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -175,26 +168,42 @@ class ManageCourseFragment : Fragment() {
     }
 
     private fun setEditable(editable: Boolean) {
-        val inputType = if (editable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        binding.editTextCourseName.inputType = inputType
+        // Apply custom enable/disable logic for EditText
+        toggleEditText(binding.editTextCourseName, editable, true)
+        toggleEditText(binding.editTextStartTime, editable)
+        toggleEditText(binding.editTextEndTime, editable)
+        toggleEditText(binding.editTextStartDate, editable)
+        toggleEditText(binding.editTextEndDate, editable)
+        toggleEditText(binding.editTextRoom, editable, true)
 
+        // Handle Spinner visibility
         if (editable) {
             binding.spinnerFrame.visibility = View.VISIBLE
             binding.textViewDayOfWeek.visibility = View.GONE
         } else {
             binding.spinnerFrame.visibility = View.GONE
             binding.textViewDayOfWeek.visibility = View.VISIBLE
+            toggleEditText(binding.textViewDayOfWeek, editable)
             binding.textViewDayOfWeek.setText(binding.spinnerDayOfWeek.selectedItem.toString())
         }
 
-
-        binding.editTextStartTime.inputType = inputType
-        binding.editTextEndTime.inputType = inputType
-        binding.editTextStartDate.inputType = inputType
-        binding.editTextEndDate.inputType = inputType
-        binding.editTextRoom.inputType = inputType
-        binding.checkBoxReminder.inputType = inputType
+        // Toggle button visibility
         binding.buttonSaveCourse.visibility = if (editable) View.VISIBLE else View.GONE
+    }
+
+    private fun toggleEditText(editText: View, enabled: Boolean, isSetFocus: Boolean = false) {
+        if (isSetFocus) {
+            editText.isFocusableInTouchMode = enabled
+            editText.isFocusable = enabled
+        }
+        editText.isEnabled = enabled
+
+        if (!enabled) {
+            editText.setBackgroundResource(android.R.color.transparent)
+            (editText as? android.widget.TextView)?.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.primaryTextColor)
+            )
+        }
     }
 
     private fun populateFields(course: CourseModel) {
@@ -291,6 +300,9 @@ class ManageCourseFragment : Fragment() {
     private fun stringToTimestamp(dateTime: String, pattern: String = "dd/MM/yyyy HH:mm"): Long {
         val formatter = SimpleDateFormat(pattern, Locale.getDefault())
         val date = formatter.parse(dateTime) ?: throw IllegalArgumentException("Invalid date format")
+
+        Log.d("_____Test", "dateTime: $dateTime")
+        Log.d("_____Test", "stringToTimestamp: ${date.time}")
         return date.time // Trả về timestamp dạng milliseconds
     }
 

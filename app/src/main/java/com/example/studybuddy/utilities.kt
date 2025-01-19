@@ -5,12 +5,16 @@ import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.studybuddy.data.local.DateUtils
 import com.example.studybuddy.data.local.model.CourseModel
 import com.example.studybuddy.services.NotificationScheduler
 import com.example.studybuddy.services.NotificationService
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
 object CONF {
     var sharedPreferences: SharedPreferences? = null
@@ -125,14 +129,74 @@ fun formatDateRange(startDate: Long, endDate: Long): String {
     return "${formatDate(startDate)} - ${formatDate(endDate)}"
 }
 
-
 fun reminderCourseNoti(context: Context, course: CourseModel) {
+    val nextTimeClass = calculateNextClassTimestamp(course.startTime, course.dayOfWeek)
+
+    if (nextTimeClass < course.startDate + course.startTime || nextTimeClass > course.endDate + course.startTime) {
+        return
+    }
+
     NotificationScheduler.scheduleNotification(
         context = context,
         notificationId = course.id,
         title = "Reminder: ${course.name}",
         message = "Sắp ${formatTime(course.startTime)}, tới giờ học rồi!",
         channelId = NotificationService.COURSE_REMINDER_CHANNEL,
-        triggerAtMillis = course.startTime - 5 * 60 * 1000 // 5 phút trước giờ học
+        triggerAtMillis = nextTimeClass - 5 * 60 * 1000 // 5 phút trước giờ học
     )
 }
+
+fun calculateNextClassTimestamp(startTime: Long, dayOfWeek: Int): Long {
+    val calendar = Calendar.getInstance()
+
+    // Lấy ngày hiện tại
+    val currentDayOfWeek = convertCalendarDayToDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK))
+    val targetDayOfWeek = dayOfWeek // Calendar.DAY_OF_WEEK starts from 1 (Sunday)
+
+    // Tính số ngày cần thêm để đến đúng thứ
+    var daysToAdd = targetDayOfWeek - currentDayOfWeek
+
+    val startDate = Date(startTime)
+    val startTimeCalendar = Calendar.getInstance()
+    startTimeCalendar.time = startDate
+
+    val startHour = startTimeCalendar.get(Calendar.HOUR_OF_DAY)
+    val startMinute = startTimeCalendar.get(Calendar.MINUTE)
+    val startSecond = startTimeCalendar.get(Calendar.SECOND)
+
+    // Lấy giờ, phút, giây hiện tại (local time)
+    val localCalendar = Calendar.getInstance()
+    val currentHour = localCalendar.get(Calendar.HOUR_OF_DAY)
+    val currentMinute = localCalendar.get(Calendar.MINUTE)
+    val currentSecond = localCalendar.get(Calendar.SECOND)
+
+    // So sánh giờ, phút, giây
+    val isTimePassed = when {
+        currentHour > startHour -> true
+        currentHour == startHour && currentMinute > startMinute -> true
+        currentHour == startHour && currentMinute == startMinute && currentSecond >= startSecond -> true
+        else -> false
+    }
+
+    if (daysToAdd < 0 || (daysToAdd == 0 && isTimePassed)) {
+        daysToAdd += 7 // Nếu đã qua ngày học hoặc giờ học, chuyển sang tuần tiếp theo
+    }
+
+    // Cộng số ngày cần thiết để tới đúng ngày học
+    calendar.add(Calendar.DAY_OF_MONTH, daysToAdd)
+        calendar.set(Calendar.HOUR_OF_DAY, startHour)
+    calendar.set(Calendar.MINUTE, startMinute)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+
+    return calendar.timeInMillis
+}
+
+fun convertCalendarDayToDayOfWeek(calendarDay: Int): Int {
+    return when (calendarDay) {
+        Calendar.SUNDAY -> 7 // SUNDAY của Calendar -> 7 (DayOfWeek)
+        else -> calendarDay - 1 // Các ngày khác: MONDAY (2) -> 1, TUESDAY (3) -> 2, ...
+    }
+}
+
+
