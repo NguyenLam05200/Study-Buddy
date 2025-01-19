@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.studybuddy.AppViewModelFactory
+import com.example.studybuddy.CourseViewModelFactory
 import com.example.studybuddy.R
 import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.repository.CourseRepository
@@ -95,7 +95,7 @@ class home_frag : Fragment() {
     ): View {
         // Khởi tạo repository và factory
         val repository = CourseRepository(DatabaseProvider.getDatabase())
-        val factory = AppViewModelFactory(repository)
+        val factory = CourseViewModelFactory(repository)
 
         // Sử dụng factory để tạo ViewModel
         viewModel = ViewModelProvider(this, factory)[home_vm::class.java]

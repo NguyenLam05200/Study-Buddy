@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.account.register_frag">
+    tools:context=".ui.account.RegisterFrag">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:scaleType="fitXY"
 
             android:src="@drawable/ic_account"
-            app:layout_constraintBottom_toTopOf="@id/account_email_textview"
+            app:layout_constraintBottom_toTopOf="@id/account_username_textview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             app:layout_constraintVertical_bias="0.5" />
 
         <TextView
-            android:id="@+id/account_email_textview"
+            android:id="@+id/account_username_textview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/textview_height"
             android:layout_marginLeft="@dimen/default_border_margin"
@@ -40,13 +40,13 @@
             android:layout_marginBottom="0dp"
 
             android:gravity="center_vertical"
-            android:text="@string/account_email"
-            app:layout_constraintBottom_toTopOf="@id/account_email_edittext"
+            android:text="@string/account_username"
+            app:layout_constraintBottom_toTopOf="@id/account_username_edittext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/account_email_edittext"
+            android:id="@+id/account_username_edittext"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edittext_height"
             android:layout_marginLeft="@dimen/default_border_margin"
@@ -55,11 +55,42 @@
 
             android:background="@drawable/element_account_edittext"
             android:gravity="center_vertical"
-            android:hint="Enter your email"
+            android:hint="Enter your username"
             android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@id/height_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/account_email_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/default_border_margin"
+
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:gravity="center_vertical"
+            android:text="@string/account_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/height_guideline" />
+
+        <EditText
+            android:id="@+id/account_email_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+
+            android:background="@drawable/element_account_edittext"
+            android:gravity="center_vertical"
+            android:hint="Enter your email"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/account_email_textview" />
+
 
         <TextView
             android:id="@+id/account_password_textview"
@@ -73,7 +104,7 @@
             android:text="@string/account_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/height_guideline" />
+            app:layout_constraintTop_toBottomOf="@id/account_email_edittext" />
 
         <EditText
             android:id="@+id/account_password_edittext"
@@ -85,6 +116,7 @@
             android:background="@drawable/element_account_edittext"
             android:gravity="center_vertical"
             android:hint="Enter your password"
+            android:inputType="textPassword"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -92,6 +124,7 @@
             app:layout_constraintTop_toBottomOf="@id/account_password_textview" />
 
         <Button
+            android:id="@+id/account_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_bottom_height"
             android:layout_marginLeft="@dimen/default_border_margin"

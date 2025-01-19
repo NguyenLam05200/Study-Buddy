@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/home_frag">
+    app:startDestination="@+id/todolist_frag">
 
     <fragment
         android:id="@+id/home_frag"
@@ -16,21 +16,27 @@
     </fragment>
 
     <fragment
+        android:id="@+id/todolist_frag"
+        android:name="com.example.studybuddy.ui.todolist.TaskFragment"
+        android:label="@string/menu_todolist"
+        tools:layout="@layout/fragment_task" />
+
+    <fragment
         android:id="@+id/register_frag"
-        android:name="com.example.studybuddy.ui.account.register_frag"
-        android:label="Register"
+        android:name="com.example.studybuddy.ui.account.RegisterFrag"
+        android:label="@string/menu_register"
         tools:layout="@layout/fragment_register" />
 
     <fragment
         android:id="@+id/deadline_add"
         android:name="com.example.studybuddy.ui.deadline.deadline_add_frag"
-        android:label="Deadline Add"
+        android:label="@string/menu_deadline_add"
         tools:layout="@layout/fragment_deadline_add" />
 
     <fragment
         android:id="@+id/login_frag"
-        android:name="com.example.studybuddy.ui.account.login_frag"
-        android:label="@string/menu_gallery"
+        android:name="com.example.studybuddy.ui.account.LoginFragment"
+        android:label="@string/menu_login"
         tools:layout="@layout/fragment_login" />
 
     <fragment

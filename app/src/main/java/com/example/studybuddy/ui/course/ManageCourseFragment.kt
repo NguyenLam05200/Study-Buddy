@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.studybuddy.AppViewModelFactory
+import com.example.studybuddy.CourseViewModelFactory
 import com.example.studybuddy.R
 import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.CourseModel
@@ -45,7 +45,7 @@ class ManageCourseFragment : Fragment() {
         _binding = FragmentManageCourseBinding.inflate(inflater, container, false)
         // Khởi tạo repository và factory
         val repository = CourseRepository(DatabaseProvider.getDatabase())
-        val factory = AppViewModelFactory(repository)
+        val factory = CourseViewModelFactory(repository)
 
         // Sử dụng factory để tạo ViewModel
         viewModel = ViewModelProvider(this, factory)[ManageCourseViewModel::class.java]
