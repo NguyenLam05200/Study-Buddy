@@ -20,7 +20,6 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     fun initialize() {
         viewModelScope.launch {
             val taskList = repository.getAllTasks()
-            Log.d("____TEST_TASK_VIEWMODEL", "Loaded tasks: ${taskList.size}")
             _tasks.postValue(taskList)
         }
     }
@@ -46,9 +45,9 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     // Cập nhật task
     fun update(position: Int, uuid: String, updatedTask: Task, callback: () -> Unit = {}) {
         viewModelScope.launch {
-            repository.updateTask(updatedTask)
-            callback()
+            repository.updateTask(uuid, updatedTask)
             refreshTasks()
+            callback()
         }
     }
 
@@ -64,5 +63,9 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     private suspend fun refreshTasks() {
         _tasks.postValue(repository.getAllTasks())
+    }
+
+    fun updateLiveData(updatedTasks: List<Task>) {
+        _tasks.value = updatedTasks
     }
 }

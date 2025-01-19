@@ -25,12 +25,15 @@ class TaskAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         return TaskViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
         holder.textView.text = task.text
+
+        // Đặt giá trị CheckBox mà không gọi lại listener
+        holder.checkBox.setOnCheckedChangeListener(null)
         holder.checkBox.isChecked = task.isChecked
 
+        // Đặt listener cho CheckBox
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             onTaskChecked(position, isChecked)
         }
@@ -41,10 +44,10 @@ class TaskAdapter(
         }
     }
 
+
     override fun getItemCount() = tasks.size
 
     fun setTasks(newTasks: List<Task>) {
-        Log.d("___TEST_TASK_ADAPTER", "Updating tasks: ${newTasks.size}")
         tasks = newTasks
         notifyDataSetChanged()
     }

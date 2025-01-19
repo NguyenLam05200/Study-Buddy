@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +18,7 @@ import com.example.studybuddy.data.local.DatabaseProvider
 import com.example.studybuddy.data.local.model.Task
 import com.example.studybuddy.data.repository.TaskRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 class TaskFragment : Fragment() {
     private lateinit var taskRecyclerView: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
@@ -94,9 +94,18 @@ class TaskFragment : Fragment() {
     }
 
     private fun onTaskChecked(pos: Int, isChecked: Boolean) {
+        Log.d("_____TEST isChecked", isChecked.toString())
         val task = viewModel.tasks.value?.get(pos)
         task?.let {
-            viewModel.update(pos, task.uuid, Task(task.text, isChecked = isChecked))
+            val updatedTask = Task(task.text, isChecked = isChecked)
+            viewModel.update(pos, task.uuid, updatedTask) {
+                // Update LiveData để UI cập nhật đúng cách
+                viewModel.tasks.value?.let { currentTasks ->
+                    val updatedTasks = currentTasks.toMutableList()
+                    updatedTasks[pos] = updatedTask
+                    viewModel.updateLiveData(updatedTasks)
+                }
+            }
         }
     }
 

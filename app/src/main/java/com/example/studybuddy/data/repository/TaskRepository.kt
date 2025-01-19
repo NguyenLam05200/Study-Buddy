@@ -24,9 +24,9 @@ class TaskRepository(private val realm: Realm) {
     }
 
     // Cập nhật task
-    suspend fun updateTask(task: Task) {
+    suspend fun updateTask(uuid: String, task: Task) {
         realm.write {
-            val managedTask = query<Task>("uuid == $0", task.uuid).first().find()
+            val managedTask = query<Task>("uuid == $0", uuid).first().find()
             managedTask?.apply {
                 text = task.text
                 isChecked = task.isChecked

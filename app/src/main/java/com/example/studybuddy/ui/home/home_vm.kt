@@ -17,7 +17,6 @@ class home_vm(private val repository: CourseRepository) : ViewModel() {
         viewModelScope.launch {
             repository.logAllCourses() // Log toàn bộ dữ liệu
             val upcoming = repository.getUpcomingCourses(limit)
-            Log.d("____VM", "fetchUpcomingCourses: Found ${upcoming.size} upcoming courses")
             _upcomingCourses.postValue(upcoming)
         }
     }
