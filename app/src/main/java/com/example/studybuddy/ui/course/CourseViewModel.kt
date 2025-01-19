@@ -55,4 +55,10 @@ class CourseViewModel(private val repository: CourseRepository) : ViewModel() {
             repository.deleteCourse(course)
         }
     }
+
+    fun updateCourse(course: CourseModel) {
+        viewModelScope.launch {
+            repository.updateCourse(course)
+        }
+    }
 }
