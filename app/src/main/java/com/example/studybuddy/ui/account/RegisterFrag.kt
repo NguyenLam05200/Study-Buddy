@@ -25,10 +25,6 @@ class RegisterFrag : Fragment() {
     lateinit var password_edittext: EditText
     lateinit var send_button: Button
 
-    companion object {
-        fun newInstance() = RegisterFrag()
-    }
-
     private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,11 +48,20 @@ class RegisterFrag : Fragment() {
         val client = MyNetwork()
         val register_baseUrl = "https://buddy.keyous.duckdns.org/"
         val register_endPoint = "register"
-        val register_payload = RegisterRequestFormat(" ", " ", " ")
 
         send_button.setOnClickListener() {
+            val register_payload = RegisterRequestFormat(
+                username_edittext.text.toString(),
+                email_edittext.text.toString(),
+                password_edittext.text.toString()
+            )
             lifecycleScope.launch {
-                getRegisterResponse(client, register_baseUrl, register_endPoint, register_payload)
+                getRegisterResponse(client, register_baseUrl, register_endPoint, register_payload) { response ->
+                    Log.d("MYNETWORK", "Message: ${response.first}, success: ${response.second}")
+                    response
+
+                    Toast.makeText(requireContext(), response.first, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -65,12 +70,13 @@ class RegisterFrag : Fragment() {
         client: MyNetwork,
         register_baseUrl: String,
         register_endPoint: String,
-        register_payload: T
+        register_payload: T,
+        callback: (Pair<String, Boolean>) -> Unit
     ) {
         withContext(Dispatchers.IO)
         {
-            client.sendPostRequest(register_baseUrl, register_endPoint, register_payload){ response ->
-                Log.d("MYNETWORK", "Message: ${response.first}, success: ${response.second}")
+            client.sendPostRequest(register_baseUrl, register_endPoint, register_payload) { response ->
+                callback(response)
             }
         }
 
