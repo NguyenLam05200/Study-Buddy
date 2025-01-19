@@ -2,6 +2,6 @@ package com.example.studybuddy.ui.account
 
 import androidx.lifecycle.ViewModel
 
-class register_vm : ViewModel() {
+class LoginViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

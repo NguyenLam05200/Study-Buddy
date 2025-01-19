@@ -2,6 +2,7 @@ package com.example.studybuddy.data.local
 
 import android.content.Context
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.ui.todolist.data.Task
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import java.time.Instant
@@ -14,6 +15,7 @@ import java.util.Locale
 object RealmSchemas {
     val SCHEMA = setOf(
         CourseModel::class,
+        Task::class
 //        QuizModel::class,
 //        SchedulerModel::class
     )

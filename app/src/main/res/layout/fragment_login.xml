@@ -3,11 +3,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.account.login_frag">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.account.LoginFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/height_guideline"
+            app:layout_constraintGuide_percent="0.45"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="horizontal" />
+
+        <ImageView
+            app:layout_constraintBottom_toTopOf="@id/account_username_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_account" />
+
+        <TextView
+            android:id="@+id/account_username_textview"
+            app:layout_constraintBottom_toTopOf="@id/account_username_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_height"
+
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:layout_marginBottom="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/account_email" />
+
+        <EditText
+            android:id="@+id/account_username_edittext"
+            app:layout_constraintBottom_toTopOf="@id/height_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:layout_marginBottom="@dimen/default_border_margin"
+            android:background="@drawable/element_account_edittext"
+            android:gravity="center_vertical"
+            android:hint="Enter your email"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/account_password_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/height_guideline"
+            android:layout_width="match_parent"
+
+            android:layout_height="@dimen/textview_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginTop="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:gravity="center_vertical"
+            android:text="@string/account_password" />
+
+        <EditText
+            android:id="@+id/account_password_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/account_password_textview"
+
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:background="@drawable/element_account_edittext"
+            android:gravity="center_vertical"
+            android:hint="Enter your password"
+            android:padding="8dp" />
+
+        <Button
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_bottom_height"
+
+            android:layout_marginLeft="@dimen/default_border_margin"
+            android:layout_marginRight="@dimen/default_border_margin"
+            android:layout_marginBottom="@dimen/default_border_margin"
+            android:text="@string/account_register_button" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>

@@ -15,9 +15,20 @@
             android:title="@string/menu_course" />
 
         <item
+            android:id="@+id/todolist_frag"
+            android:icon="@drawable/ic_create"
+            android:title="@string/menu_todolist" />
+
+        <item
             android:id="@+id/register_frag"
             android:icon="@drawable/ic_create"
-            android:title="Register" />
+            android:title="@string/menu_register" />
+
+        <item
+            android:id="@+id/login_frag"
+            android:icon="@drawable/ic_account"
+            android:title="@string/menu_login" />
+
 
         <item
             android:id="@+id/deadline_add"

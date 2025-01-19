@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.studybuddy.R
 
-class register_frag : Fragment() {
+class LoginFragment : Fragment() {
 
     companion object {
-        fun newInstance() = register_frag()
+        fun newInstance() = LoginFragment()
     }
 
-    private val viewModel: register_vm by viewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,6 @@ class register_frag : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_register, container, false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 }
