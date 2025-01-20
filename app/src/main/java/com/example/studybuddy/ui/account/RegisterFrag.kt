@@ -47,7 +47,7 @@ class RegisterFrag : Fragment() {
         getUIBindings(view)
 
         val client = MyNetwork()
-        val register_baseUrl = "https://buddy.keyous.duckdns.org/"
+        val register_baseUrl = "https://buddy.alouve.top/"
         val register_endPoint = "register"
 
         send_button.setOnClickListener() {

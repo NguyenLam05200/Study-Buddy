@@ -27,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -107,10 +108,14 @@ class LoginFragment : Fragment() {
                 showToast(requireContext(), response.first)
                 if (response.second) {
                     Log.d("MYNETWORK", "Sucessfully logged in EMAIL")
+
+                    val navigationView = requireActivity().findViewById<NavigationView>(R.id.nav_view)
+                    val menu = navigationView.menu
+                    menu.findItem(R.id.register_frag).isVisible = false
+                    menu.findItem(R.id.login_frag).isVisible = false
+
                     val action = LoginFragmentDirections.actionLoginFragToHomeFrag()
                     findNavController().navigate(action)
-//                    val navController = findNavController()
-//                    navController.navigate(R.id.action_login_frag_to_home_frag)
                 }
             }
         }
@@ -126,10 +131,14 @@ class LoginFragment : Fragment() {
 
                 if (response.second) {
                     Log.d("MYNETWORK", "Sucessfully logged in GOOGLE")
+
+                    val navigationView = requireActivity().findViewById<NavigationView>(R.id.nav_view)
+                    val menu = navigationView.menu
+                    menu.findItem(R.id.register_frag).isVisible = false
+                    menu.findItem(R.id.login_frag).isVisible = false
+
                     val action = LoginFragmentDirections.actionLoginFragToHomeFrag()
                     findNavController().navigate(action)
-//                    val navController = findNavController()
-//                    navController.navigate(R.id.action_login_frag_to_home_frag)
                 }
             }
         }
