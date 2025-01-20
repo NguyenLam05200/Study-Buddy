@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -124,18 +125,30 @@ class TaskFragment : Fragment() {
     }
 
     private fun onTaskLongClicked(pos: Int) {
-        val editText = EditText(requireContext())
         val task = viewModel.getTask(pos)
         task?.let {
             Log.d("TODOLIST", "Before at index ${pos}: ${task.uuid}, ${task.text}, ${task.isChecked}")
 
-            // set edittext to current task description
-            editText.setText(task.text)
+            // Tạo EditText với layout params
+            val editText = EditText(requireContext()).apply {
+                setText(task.text) // Set text hiện tại của task
+                layoutParams = ViewGroup.MarginLayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(40, 20, 40, 20) // Set margin cho EditText (left, top, right, bottom)
+                }
+            }
 
-            // dialog
+            // Tạo container để bọc EditText
+            val container = FrameLayout(requireContext()).apply {
+                addView(editText) // Thêm EditText vào container
+            }
+
+            // Tạo dialog
             val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Edit task")
-            builder.setView(editText)
+            builder.setTitle("Edit Task")
+            builder.setView(container)
 
             builder.setPositiveButton("Save") { _, _ ->
                 val new_text = editText.text.toString()
@@ -148,4 +161,5 @@ class TaskFragment : Fragment() {
             builder.show()
         }
     }
+
 }

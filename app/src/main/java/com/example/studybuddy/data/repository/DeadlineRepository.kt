@@ -53,7 +53,6 @@ class DeadlineRepository(private val realm: Realm) {
             findLatest(deadline)?.let { delete(it) }
         }
     }
-
     suspend fun updateDeadline(deadline: DeadlineModel) {
         try {
             realm.write {
@@ -64,7 +63,10 @@ class DeadlineRepository(private val realm: Realm) {
                         name = deadline.name
                         time = deadline.time
                         courseId = deadline.courseId
-                        dueDate = deadline.dueDate
+                        courseName = deadline.courseName
+                        hasReminder = deadline.hasReminder
+
+                        // Cập nhật `dueDate` sau khi chỉnh sửa các thuộc tính liên quan
                         updateDueDate()
                     }
                 } else {

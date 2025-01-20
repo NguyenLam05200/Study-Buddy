@@ -7,12 +7,12 @@ import java.util.UUID
 class TaskModel : RealmObject {
     @PrimaryKey
     var uuid: String = UUID.randomUUID().toString()
-    var text: String = "Default task string"
+    var text: String = "New task"
     var isChecked: Boolean = false
 
     constructor() {}
 
-    constructor(text: String = "Default task string", isChecked: Boolean = false) {
+    constructor(text: String = "New task", isChecked: Boolean = false) {
         this.text = text
         this.isChecked = isChecked
     }

@@ -5,6 +5,11 @@ import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.studybuddy.data.local.DateUtils
@@ -14,6 +19,7 @@ import com.example.studybuddy.services.NotificationScheduler
 import com.example.studybuddy.services.NotificationService
 import java.util.Calendar
 import java.util.Date
+import com.example.studybuddy.R
 
 enum class LAYOUT_MODE(val value: Int)
 {
@@ -104,20 +110,58 @@ fun showInfoDialog(context: Context, title: String = "Default", message: String,
     val dialog = builder.create()
     dialog.show()
 }
-
-// Toast chỉ có thể được gọi trên UI thread (main thread)
-fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_SHORT) {
+//
+//// Toast chỉ có thể được gọi trên UI thread (main thread)
+//fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_SHORT) {
+//    if (Looper.myLooper() == Looper.getMainLooper()) {
+//        // Đang ở UI thread
+//        Toast.makeText(context, message, duration).show()
+//    } else {
+//        // Chuyển sang UI thread
+//        Handler(Looper.getMainLooper()).post {
+//            Toast.makeText(context, message, duration).show()
+//        }
+//    }
+//}
+fun showToast(
+    context: Context,
+    message: String,
+    iconResId: Int = R.drawable.ic_logo_app, // Default icon
+    duration: Int = Toast.LENGTH_SHORT
+) {
     if (Looper.myLooper() == Looper.getMainLooper()) {
-        // Đang ở UI thread
-        Toast.makeText(context, message, duration).show()
+        // UI thread
+        createCustomToast(context, message, iconResId, duration).show()
     } else {
-        // Chuyển sang UI thread
+        // Move to UI thread
         Handler(Looper.getMainLooper()).post {
-            Toast.makeText(context, message, duration).show()
+            createCustomToast(context, message, iconResId, duration).show()
         }
     }
 }
 
+private fun createCustomToast(context: Context, message: String, iconResId: Int?, duration: Int): Toast {
+    // Inflate the custom layout
+    val layoutInflater = LayoutInflater.from(context)
+    val layout = layoutInflater.inflate(R.layout.custom_toast_layout, null)
+
+    // Set the icon (always visible now)
+    val iconView = layout.findViewById<ImageView>(R.id.toast_icon)
+    iconResId?.let {
+        iconView.setImageResource(it)
+        iconView.visibility = View.VISIBLE
+    }
+
+    // Set the text
+    val textView = layout.findViewById<TextView>(R.id.toast_text)
+    textView.text = message
+
+    // Create the toast
+    return Toast(context).apply {
+        view = layout
+        this.duration = duration
+    }
+}
 
 // Format thời gian
 fun formatTime(value: Long): String {
@@ -155,6 +199,7 @@ fun reminderCourseNoti(context: Context, course: CourseModel) {
 }
 
 fun reminderDeadlineNoti(context: Context, deadline: DeadlineModel) {
+    Log.d("_____Test", "reminderDeadlineNoti: ${deadline.name} time: ${deadline.dueDate} current: ${System.currentTimeMillis()}")
     if (deadline.dueDate < System.currentTimeMillis()) {
         return
     }

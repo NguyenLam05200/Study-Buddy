@@ -14,29 +14,29 @@
             android:icon="@drawable/ic_menu_course"
             android:title="@string/menu_course" />
 
-        <item
-            android:id="@+id/file_frag"
-            android:icon="@drawable/ic_file_placeholder"
-            android:title="Files" />
+<!--        <item-->
+<!--            android:id="@+id/file_frag"-->
+<!--            android:icon="@drawable/ic_file_placeholder"-->
+<!--            android:title="Files" />-->
 
         <item
             android:id="@+id/todolist_frag"
             android:icon="@drawable/ic_create"
             android:title="@string/menu_todolist" />
 
-        <item
-            android:id="@+id/register_frag"
-            android:icon="@drawable/ic_create"
-            android:title="@string/menu_register" />
+<!--        <item-->
+<!--            android:id="@+id/register_frag"-->
+<!--            android:icon="@drawable/ic_register"-->
+<!--            android:title="@string/menu_register" />-->
 
-        <item
-            android:id="@+id/login_frag"
-            android:icon="@drawable/ic_account"
-            android:title="@string/menu_login" />
+<!--        <item-->
+<!--            android:id="@+id/login_frag"-->
+<!--            android:icon="@drawable/ic_account"-->
+<!--            android:title="@string/menu_login" />-->
 
         <item
             android:id="@+id/deadline_frag"
-            android:icon="@drawable/ic_add_circle"
+            android:icon="@drawable/ic_deadline"
             android:title="Deadline" />
 
         <item

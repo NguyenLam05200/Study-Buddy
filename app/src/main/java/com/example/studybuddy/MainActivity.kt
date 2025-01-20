@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.settings_frag,
                 R.id.todolist_frag,
                 R.id.register_frag,
+                R.id.deadline_frag,
                 R.id.login_frag,
                 R.id.file_frag
             ), drawerLayout

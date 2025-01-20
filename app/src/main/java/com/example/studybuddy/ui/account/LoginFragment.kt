@@ -19,6 +19,7 @@ import com.example.studybuddy.ui.account.data.LoginRequestFormat
 import com.example.studybuddy.ui.account.data.LoginRequestFormat_Google
 import com.example.studybuddy.ui.account.data.MyNetwork
 import com.example.studybuddy.utilities.CONF
+import com.example.studybuddy.utilities.showToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -66,7 +67,7 @@ class LoginFragment : Fragment() {
 
         send_button.setOnClickListener {
             val client = MyNetwork()
-            val email_baseUrl = "https://buddy.keyous.duckdns.org/"
+            val email_baseUrl = "https://buddy.alouve.top/"
             val email_endPoint = "login"
             val email_payload = LoginRequestFormat(
                 username_edittext.text.toString(),
@@ -101,8 +102,9 @@ class LoginFragment : Fragment() {
                 Log.d("MYNETWORK", "Message: ${response.first}, success: ${response.second}")
                 response
 
-                Toast.makeText(requireContext(), response.first, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), response.first, Toast.LENGTH_SHORT).show()
 
+                showToast(requireContext(), response.first)
                 if (response.second) {
                     Log.d("MYNETWORK", "Sucessfully logged in EMAIL")
                     val action = LoginFragmentDirections.actionLoginFragToHomeFrag()

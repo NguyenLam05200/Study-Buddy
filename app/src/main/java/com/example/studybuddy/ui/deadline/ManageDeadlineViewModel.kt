@@ -66,6 +66,8 @@ class ManageDeadlineViewModel(val repository: DeadlineRepository) : ViewModel() 
     fun updateDeadline(deadline: DeadlineModel, context: Context, onComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
+                deadline.updateDueDate()
+
                 withContext(Dispatchers.IO) {
                     repository.updateDeadline(deadline)
                 }

@@ -26,12 +26,12 @@ import kotlinx.coroutines.launch
 
 data class Quote(val content: String, val author: String)
 private val quotes = listOf(
+    Quote("Giáo dục là vũ khí mạnh nhất mà bạn có thể sử dụng để thay đổi thế giới", "Nelson Mandela"),
+    Quote("Học tập không phải là sự chuẩn bị cho cuộc sống, học tập chính là cuộc sống", "John Dewey"),
     Quote("Có công mài sắt, có ngày nên kim", "Tục ngữ Việt Nam"),
     Quote("Học, học nữa, học mãi", "Lenin"),
     Quote("Không có việc gì khó, chỉ sợ lòng không bền", "Hồ Chí Minh"),
     Quote("Kiến tha lâu đầy tổ", "Tục ngữ Việt Nam"),
-    Quote("Giáo dục là vũ khí mạnh nhất mà bạn có thể sử dụng để thay đổi thế giới", "Nelson Mandela"),
-    Quote("Học tập không phải là sự chuẩn bị cho cuộc sống, học tập chính là cuộc sống", "John Dewey"),
     Quote("Chỉ có những người biết học suốt đời mới là người thành công", "Albert Einstein"),
     Quote("Chìa khóa của sự thành công là sự kiên nhẫn", "Benjamin Franklin"),
     Quote("Thất bại là cơ hội để bắt đầu lại một cách thông minh hơn", "Henry Ford"),
