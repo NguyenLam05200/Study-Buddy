@@ -1,0 +1,132 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".ui.deadline.ManageDeadlineFragment">
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/buttonSaveDeadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Tên khóa học -->
+            <TextView
+                android:id="@+id/textViewDeadlineNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deadline Name"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextDeadlineName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter deadline name"
+                android:inputType="none" />
+
+            <!-- Thời gian bắt đầu -->
+            <TextView
+                android:id="@+id/textViewTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="HH:mm"
+                android:inputType="none" />
+
+            <!-- Ngày bắt đầu -->
+            <TextView
+                android:id="@+id/textViewDueDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due Date"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextDueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="dd-MM-YYYY"
+                android:inputType="none" />
+
+            <!-- Ngày trong tuần -->
+            <TextView
+                android:id="@+id/textViewDayOfWeekLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Course"
+                android:textStyle="bold" />
+
+
+            <FrameLayout
+                android:id="@+id/spinnerFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="2dp">
+
+                <!-- Spinner của bạn -->
+                <Spinner
+                    android:id="@+id/spinnerCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    />
+                <!-- Đường viền dưới cùng -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="8dp"
+                    android:background="#8A000000" /> <!-- Khoảng cách nếu cần -->
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/textViewDayOfWeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Lập trình web"
+                android:inputType="none"
+                android:textSize="16sp" />
+
+            <!-- Checkbox Reminder -->
+            <CheckBox
+                android:id="@+id/checkBoxReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enable Reminder" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Button cố định ở cuối -->
+    <Button
+        android:id="@+id/buttonSaveDeadline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

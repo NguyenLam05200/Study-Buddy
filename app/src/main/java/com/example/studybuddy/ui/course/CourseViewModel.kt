@@ -10,6 +10,7 @@ import java.time.DayOfWeek
 
 val defaultCourses = listOf(
     CourseModel().apply {
+        id = 1
         name = "Lập trình Mobile"
         dayOfWeek = DayOfWeek.MONDAY.value
         startTime = 1737358800000L
@@ -20,6 +21,7 @@ val defaultCourses = listOf(
         room = "D211"
     },
     CourseModel().apply {
+        id = 2
         name = "Lập trình web"
         dayOfWeek = DayOfWeek.TUESDAY.value
         startTime = 1726790400000L
