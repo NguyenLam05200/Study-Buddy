@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.studybuddy.R
 import com.example.studybuddy.ui.account.data.LoginRequestFormat
 import com.example.studybuddy.ui.account.data.LoginRequestFormat_Google
@@ -104,6 +105,8 @@ class LoginFragment : Fragment() {
 
                 if (response.second) {
                     Log.d("MYNETWORK", "Sucessfully logged in EMAIL")
+                    val action = LoginFragmentDirections.actionLoginFragToHomeFrag()
+                    findNavController().navigate(action)
 //                    val navController = findNavController()
 //                    navController.navigate(R.id.action_login_frag_to_home_frag)
                 }
@@ -121,6 +124,8 @@ class LoginFragment : Fragment() {
 
                 if (response.second) {
                     Log.d("MYNETWORK", "Sucessfully logged in GOOGLE")
+                    val action = LoginFragmentDirections.actionLoginFragToHomeFrag()
+                    findNavController().navigate(action)
 //                    val navController = findNavController()
 //                    navController.navigate(R.id.action_login_frag_to_home_frag)
                 }

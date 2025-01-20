@@ -66,7 +66,6 @@ class CourseRepository(private val realm: Realm) {
                         hasReminder = course.hasReminder
                         room = course.room
                     }
-                    Log.d("____Repo", "updateCourse success: ${managedCourse.startTime}")
                 } else {
                     Log.e("____Repo", "updateCourse failed: Course not found with id ${course.id}")
                 }
@@ -79,7 +78,6 @@ class CourseRepository(private val realm: Realm) {
 
     fun logAllCourses() {
         val courses = realm.query<CourseModel>().find()
-        Log.d("____Repo", "Total Courses in Realm: ${courses.size}")
         courses.forEach {
             Log.d("____Repo", "Course: ${it.name}, startTime: ${it.startTime}, currentTime: ${System.currentTimeMillis()}")
         }

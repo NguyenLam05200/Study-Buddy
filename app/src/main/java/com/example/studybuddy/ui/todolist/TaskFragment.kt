@@ -21,6 +21,7 @@ import com.example.studybuddy.ui.todolist.data.TaskAdapter
 import com.example.studybuddy.ui.todolist.data.TaskRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+
 class TaskFragment : Fragment() {
     lateinit var task_recyclerview: RecyclerView
     lateinit var task_adapter: TaskAdapter
@@ -112,6 +113,7 @@ class TaskFragment : Fragment() {
     }
 
     private fun onTaskChecked(pos: Int, isChecked: Boolean) {
+        Log.d("_____TEST isChecked", isChecked.toString())
         val task = viewModel.tasks.value?.get(pos)
         task?.let {
             Log.d("TODOLIST", "isChecked: ${isChecked}")

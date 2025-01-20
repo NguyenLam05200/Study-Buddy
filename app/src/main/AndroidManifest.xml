@@ -33,7 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".services.AlarmReceiver" android:exported="false" />
+
+        <receiver
+            android:name=".services.AlarmReceiver"
+            android:exported="false" />
         <receiver
             android:name=".services.BootReceiver"
             android:enabled="true"

@@ -35,8 +35,6 @@ object NotificationScheduler {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        Log.d("____Test", "scheduleNotification: $triggerAtMillis")
-
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             triggerAtMillis,
