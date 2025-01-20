@@ -1,6 +1,7 @@
 package com.example.studybuddy.data.local
 
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.data.local.model.DeadlineModel
 import com.example.studybuddy.data.local.model.Task
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -15,7 +16,8 @@ import java.util.Locale
 object RealmSchemas {
     val SCHEMA = setOf(
         CourseModel::class,
-        Task::class
+        Task::class,
+        DeadlineModel::class
 //        QuizModel::class,
 //        SchedulerModel::class
     )
@@ -40,6 +42,13 @@ object DatabaseProvider {
     fun generateAutoIncrementId(): Int {
         val currentRealm = getDatabase()
         val maxId = currentRealm.query<CourseModel>().max("id", Int::class).find() ?: 0
+        return maxId + 1
+    }
+
+    @Synchronized
+    fun generateDeadlineAutoIncrementId(): Int {
+        val currentRealm = getDatabase()
+        val maxId = currentRealm.query<DeadlineModel>().max("id", Int::class).find() ?: 0
         return maxId + 1
     }
 }

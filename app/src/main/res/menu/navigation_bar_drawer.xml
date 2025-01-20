@@ -31,9 +31,9 @@
 
 
         <item
-            android:id="@+id/deadline_add"
+            android:id="@+id/deadline_frag"
             android:icon="@drawable/ic_add_circle"
-            android:title="Add Deadline" />
+            android:title="Deadline" />
 
         <item
             android:id="@+id/settings_frag"

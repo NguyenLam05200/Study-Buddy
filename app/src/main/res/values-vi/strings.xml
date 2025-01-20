@@ -32,10 +32,13 @@
 
     <string name="course_addcourse">Thêm khóa học</string>
     <string name="no_courses_available">Không có khóa học nào</string>
+    <string name="no_deadline_available">Không có dealine nào</string>
     <string name="edit_course">Chỉnh sửa khóa học</string>
     <string name="delete_course">Xóa khóa học</string>
     <string name="new_course">Khóa học mới</string>
+    <string name="new_deadline">Dealine mới</string>
     <string name="course_manage">Quản lý khóa học</string>
+    <string name="deadline_manage">Quản lý deadline</string>
     <string name="label_course_name">Tên khóa học</string>
     <string name="hint_course_name">Nhập tên khóa học</string>
     <string name="label_course_time">Thời gian học</string>

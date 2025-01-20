@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.studybuddy.data.local.DateUtils
 import com.example.studybuddy.data.local.model.CourseModel
+import com.example.studybuddy.data.local.model.DeadlineModel
 import com.example.studybuddy.services.NotificationScheduler
 import com.example.studybuddy.services.NotificationService
 import java.util.Calendar
@@ -143,6 +144,21 @@ fun reminderCourseNoti(context: Context, course: CourseModel) {
         message = "Sắp ${formatTime(course.startTime)}, tới giờ học rồi!",
         channelId = NotificationService.COURSE_REMINDER_CHANNEL,
         triggerAtMillis = nextTimeClass - 5 * 60 * 1000 // 5 phút trước giờ học
+    )
+}
+
+fun reminderDeadlineNoti(context: Context, deadline: DeadlineModel) {
+    if (deadline.dueDate < System.currentTimeMillis()) {
+        return
+    }
+
+    NotificationScheduler.scheduleNotification(
+        context = context,
+        notificationId = deadline.id,
+        title = "Deadline: ${deadline.name}",
+        message = "Sắp ${formatTime(deadline.dueDate)}, trễ deadline rồi!",
+        channelId = NotificationService.GENERAL_NOTIFICATIONS_CHANNEL,
+        triggerAtMillis = deadline.dueDate - 5 * 60 * 1000 // 5 phút trước giờ học
     )
 }
 
