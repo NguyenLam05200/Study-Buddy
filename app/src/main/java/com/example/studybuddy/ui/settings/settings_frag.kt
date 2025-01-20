@@ -135,7 +135,7 @@ class settings_frag : Fragment() {
 
         /* Bind adapters to spinners */
         language_spinner.adapter = language_adapter
-        dateformat.adapter = fontsize_adapter
-        fontsize.adapter = datetime_adapter
+        dateformat.adapter = datetime_adapter
+        fontsize.adapter = fontsize_adapter
     }
 }
