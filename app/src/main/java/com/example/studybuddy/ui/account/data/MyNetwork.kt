@@ -1,6 +1,5 @@
 package com.example.studybuddy.ui.account.data
 
-import android.util.Log
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
@@ -21,6 +20,7 @@ interface ApiService {
 data class ResponseFormat(val message: String, val success: Boolean)
 data class RegisterRequestFormat(val username: String, val email: String, val password: String)
 data class LoginRequestFormat(val username: String, val password: String)
+data class LoginRequestFormat_Google(val idToken: String)
 
 class MyNetwork {
     fun <T> makeRequestBody(payload: T): RequestBody {

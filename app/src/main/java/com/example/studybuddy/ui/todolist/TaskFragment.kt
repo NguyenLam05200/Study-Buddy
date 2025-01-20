@@ -1,77 +1,66 @@
 package com.example.studybuddy.ui.todolist
 
 import android.app.AlertDialog
+import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studybuddy.R
 import com.example.studybuddy.TaskViewModelFactory
 import com.example.studybuddy.data.local.DatabaseProvider
-import com.example.studybuddy.data.local.model.Task
-import com.example.studybuddy.data.repository.TaskRepository
+import com.example.studybuddy.ui.todolist.data.TaskModel
+import com.example.studybuddy.ui.todolist.data.TaskAdapter
+import com.example.studybuddy.ui.todolist.data.TaskRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 class TaskFragment : Fragment() {
-    private lateinit var taskRecyclerView: RecyclerView
-    private lateinit var taskAdapter: TaskAdapter
-    private lateinit var viewModel: TaskViewModel
+    lateinit var task_recyclerview: RecyclerView
+    lateinit var task_adapter: TaskAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        val repository = TaskRepository(DatabaseProvider.getDatabase())
-        val factory = TaskViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[TaskViewModel::class.java]
+    val viewModel: TaskViewModel by viewModels {
+        val realm = DatabaseProvider.getDatabase()
+        TaskViewModelFactory(TaskRepository(realm))
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // TODO: Use the ViewModel
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_task, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Bind RecyclerView
-        taskRecyclerView = view.findViewById(R.id.task_recyclerview)
-        taskAdapter = TaskAdapter(
-            tasks = emptyList(),
-            onTaskChecked = ::onTaskChecked,
-            onTaskLongClicked = ::onTaskLongClicked
-        )
-        taskRecyclerView.adapter = taskAdapter
-        taskRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        /* Get from XML */
+        getUIBindings(view)
 
-        // Call initialize to load tasks
+        /* Recycler view data & adapter */
+        task_adapter = TaskAdapter(emptyList())
+        task_recyclerview.adapter = task_adapter
+        task_recyclerview.layoutManager = LinearLayoutManager(requireContext())
+
+        /* Get from database */
         viewModel.initialize()
 
-        // Observe LiveData
-        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
-            taskAdapter.setTasks(tasks) // Automatically updates RecyclerView
-        }
+        // Observe LiveData from ViewModel
+        viewModel.tasks.observe(viewLifecycleOwner, Observer { tasks ->
+            task_adapter.setTasks(tasks)
+        })
 
-        // Swipe to delete
-        setupSwipeToDelete()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        setupFloatingActionButton()
-    }
-
-    private fun setupFloatingActionButton() {
-        val floatingButton = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-        floatingButton?.let {
-            it.setOnClickListener { onAddButtonClicked() }
-        } ?: Log.e("TaskFragment", "FloatingActionButton not found!")
-    }
-
-    private fun setupSwipeToDelete() {
+        /* Actions */
+        // Swipe right to delete
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
@@ -79,24 +68,56 @@ class TaskFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
+
                 val task = viewModel.getTask(pos)
                 task?.let {
+                    Log.d("TODOLIST", "Deleting index ${pos}: ${task.text}, isChecked: ${task.isChecked}")
+
                     viewModel.remove(task)
                 }
             }
         })
-        itemTouchHelper.attachToRecyclerView(taskRecyclerView)
+        itemTouchHelper.attachToRecyclerView(task_recyclerview)
+
+        // Long press
+        task_adapter.onTaskChecked = ::onTaskChecked
+        task_adapter.onTaskLongClicked = ::onTaskLongClicked
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val floating_button = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        floating_button.show()
+        floating_button.setOnClickListener { onAddButtonClicked() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val floating_button = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        floating_button.show()
+        floating_button.setOnClickListener { onAddButtonClicked() }
     }
 
     private fun onAddButtonClicked() {
-        val newTask = Task()
-        viewModel.add(newTask)
+        val task = TaskModel()
+        Log.d("TODOLIST", "Adding in fragment: ${task.uuid}, ${task.text}, ${task.isChecked}")
+
+        viewModel.add(task)
+    }
+
+    private fun getUIBindings(view: View) {
+        task_recyclerview = view.findViewById(R.id.task_recyclerview)
     }
 
     private fun onTaskChecked(pos: Int, isChecked: Boolean) {
         val task = viewModel.tasks.value?.get(pos)
         task?.let {
-            viewModel.update(pos, task.uuid, Task(task.text, isChecked = isChecked))
+            Log.d("TODOLIST", "isChecked: ${isChecked}")
+            Log.d("TODOLIST", "Editing index ${pos}: ${task.uuid}, ${task.text}, isChecked: ${task.isChecked}")
+
+            viewModel.update(pos, task.uuid, TaskModel(task.text, isChecked = isChecked))
         }
     }
 
@@ -104,17 +125,25 @@ class TaskFragment : Fragment() {
         val editText = EditText(requireContext())
         val task = viewModel.getTask(pos)
         task?.let {
+            Log.d("TODOLIST", "Before at index ${pos}: ${task.uuid}, ${task.text}, ${task.isChecked}")
+
+            // set edittext to current task description
             editText.setText(task.text)
 
-            AlertDialog.Builder(requireContext())
-                .setTitle("Edit Task")
-                .setView(editText)
-                .setPositiveButton("Save") { _, _ ->
-                    val updatedText = editText.text.toString()
-                    viewModel.update(pos, task.uuid, Task(updatedText, task.isChecked))
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
+            // dialog
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Edit task")
+            builder.setView(editText)
+
+            builder.setPositiveButton("Save") { _, _ ->
+                val new_text = editText.text.toString()
+                Log.d("TODOLIST", "Changed text: ${task.text}")
+
+                viewModel.update(pos, task.uuid, TaskModel(new_text, task.isChecked))
+            }
+            builder.setNegativeButton("Cancel", null)
+
+            builder.show()
         }
     }
 }

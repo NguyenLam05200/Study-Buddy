@@ -1,10 +1,10 @@
-package com.example.studybuddy.data.local.model
+package com.example.studybuddy.ui.todolist.data
 
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import java.util.UUID
 
-class Task : RealmObject {
+class TaskModel : RealmObject {
     @PrimaryKey
     var uuid: String = UUID.randomUUID().toString()
     var text: String = "Default task string"

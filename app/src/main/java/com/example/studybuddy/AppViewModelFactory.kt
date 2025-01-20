@@ -3,7 +3,7 @@ package com.example.studybuddy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.studybuddy.data.repository.CourseRepository
-import com.example.studybuddy.data.repository.TaskRepository
+import com.example.studybuddy.ui.todolist.data.TaskRepository
 import com.example.studybuddy.ui.course.CourseViewModel
 import com.example.studybuddy.ui.course.ManageCourseViewModel
 import com.example.studybuddy.ui.home.home_vm

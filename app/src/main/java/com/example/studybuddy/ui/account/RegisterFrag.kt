@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.studybuddy.R
 import com.example.studybuddy.ui.account.data.MyNetwork
 import com.example.studybuddy.ui.account.data.RegisterRequestFormat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -64,6 +65,20 @@ class RegisterFrag : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val floating_button = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        floating_button.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val floating_button = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        floating_button.hide()
     }
 
     suspend fun <T> getRegisterResponse(

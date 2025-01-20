@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/todolist_frag">
+    app:startDestination="@+id/login_frag">
 
     <fragment
         android:id="@+id/home_frag"
@@ -14,6 +14,12 @@
             android:id="@+id/action_home_frag_to_manage_course_frag"
             app:destination="@id/manage_course_frag" />
     </fragment>
+
+    <fragment
+        android:id="@+id/file_frag"
+        android:name="com.example.studybuddy.ui.filemanager.FileManagerFragment"
+        android:label="Files"
+        tools:layout="@layout/fragment_file_manager" />
 
     <fragment
         android:id="@+id/todolist_frag"
@@ -37,7 +43,11 @@
         android:id="@+id/login_frag"
         android:name="com.example.studybuddy.ui.account.LoginFragment"
         android:label="@string/menu_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_frag_to_home_frag"
+            app:destination="@id/home_frag" />
+    </fragment>
 
     <fragment
         android:id="@+id/slideshow_frag"

@@ -12,6 +12,7 @@
     <dimen name="textview_height">40dp</dimen>
     <dimen name="button_bottom_height">56dp</dimen>
     <dimen name="datebutton_width">40dp</dimen>
+    <dimen name="googlebutton_width">56dp</dimen>
 
     <dimen name="account_margin_between_each">16dp</dimen>
 

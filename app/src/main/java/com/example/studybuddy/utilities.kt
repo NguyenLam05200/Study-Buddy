@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.studybuddy.data.local.DateUtils
@@ -14,7 +13,12 @@ import com.example.studybuddy.services.NotificationScheduler
 import com.example.studybuddy.services.NotificationService
 import java.util.Calendar
 import java.util.Date
-import java.util.TimeZone
+
+enum class LAYOUT_MODE(val value: Int)
+{
+    LINEAR(0),
+    GRID(1)
+}
 
 object CONF {
     var sharedPreferences: SharedPreferences? = null
@@ -38,6 +42,9 @@ object CONF {
     val SWITCH_BUTTON_KEY = "switch"
     val LANGUAGE_KEY = "language"
     val PREF_KEY = "pref"
+    val FILE_CHOOSING_REQUEST_CODE = 121
+    val REQUEST_STORAGE_PERMISSION = 8731
+    val GOOGLE_SIGN_IN_REQUEST_CODE = 146
 }
 
 object PreferencesManager {

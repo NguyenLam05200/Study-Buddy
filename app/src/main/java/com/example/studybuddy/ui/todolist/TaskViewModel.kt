@@ -2,67 +2,83 @@ package com.example.studybuddy.ui.todolist
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.studybuddy.data.local.model.Task
-import com.example.studybuddy.data.repository.TaskRepository
+import com.example.studybuddy.ui.todolist.data.TaskModel
+import com.example.studybuddy.ui.todolist.data.TaskRepository
 import io.realm.kotlin.ext.isManaged
+import io.realm.kotlin.types.RealmObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.Flow
+
+class RealmLiveData<T : RealmObject>(private val repository: TaskRepository, private val scope: CoroutineScope) :
+    LiveData<List<T>>() {
+    private var job: Job? = null
+
+    override fun onActive() {
+        job = scope.launch {
+            repository.getAll_Flow().collect { tasks ->
+                postValue(tasks as List<T>)
+            }
+        }
+    }
+
+    override fun onInactive() {
+        job?.cancel()
+    }
+}
 
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
+    lateinit var tasks: LiveData<List<TaskModel>>
 
-    private val _tasks = MutableLiveData<List<Task>>()
-    val tasks: LiveData<List<Task>> get() = _tasks
-
-    // Lấy tất cả các task từ database
     fun initialize() {
         viewModelScope.launch {
-            val taskList = repository.getAllTasks()
-            Log.d("____TEST_TASK_VIEWMODEL", "Loaded tasks: ${taskList.size}")
-            _tasks.postValue(taskList)
+            tasks = RealmLiveData(repository, viewModelScope)
         }
     }
 
-    // Thêm task mới
-    fun add(task: Task, callback: () -> Unit = {}) {
-        viewModelScope.launch {
-            repository.addTask(task)
-            callback()
-            refreshTasks()
+    fun logAll() {
+        for (i in 0 until tasks.value!!.size) {
+            val task = tasks.value!![i]
+            Log.d(
+                "TODOLIST",
+                "Index ${i}: isManaged: ${task.isManaged()}, ${task.uuid}, ${task.text}, ${task.isChecked}"
+            )
         }
     }
 
-    // Xóa một task
-    fun remove(task: Task, callback: () -> Unit = {}) {
-        viewModelScope.launch {
-            repository.deleteTask(task)
-            callback()
-            refreshTasks()
-        }
+    fun getTask(pos: Int): TaskModel? {
+        return tasks.value?.get(pos)
     }
 
-    // Cập nhật task
-    fun update(position: Int, uuid: String, updatedTask: Task, callback: () -> Unit = {}) {
-        viewModelScope.launch {
-            repository.updateTask(updatedTask)
-            callback()
-            refreshTasks()
-        }
-    }
-
-    // Lấy một task cụ thể
-    fun getTask(position: Int): Task? {
-        return _tasks.value?.getOrNull(position)
-    }
-
-    // Lấy tổng số task
     fun getSize(): Int {
-        return _tasks.value?.size ?: 0
+        return tasks.value?.size ?: 0
     }
 
-    private suspend fun refreshTasks() {
-        _tasks.postValue(repository.getAllTasks())
+    fun add(item: TaskModel) {
+        viewModelScope.launch {
+            val managedItem = repository.add(item)
+            Log.d("TODOLIST", "Adding in ViewModel: ${item.uuid}, ${item.text}, ${item.isChecked}")
+            Log.d("TODOLIST", "Is Managed: ${managedItem.isManaged()}")
+
+            logAll()
+        }
+    }
+
+    fun remove(item: TaskModel) {
+        viewModelScope.launch {
+            repository.remove(item)
+
+            logAll()
+        }
+    }
+
+    fun update(pos: Int, uuid: String, updated: TaskModel) {
+        viewModelScope.launch {
+            repository.update(uuid, updated)
+
+            logAll()
+        }
     }
 }
